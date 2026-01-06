@@ -285,7 +285,7 @@
         <button onclick="openModal('modal-contact')" class="px-8 py-3 rounded-full bg-accent/10 border border-accent text-accent font-semibold hover:bg-accent hover:text-bg transition-all duration-300">
           Get In Touch
         </button>
-        <a href="nijat-cv-newer2 - new.pdf" download class="px-8 py-3 rounded-full border border-gray-600 text-gray-300 font-semibold hover:border-white hover:text-white transition-all duration-300">
+        <a href="nijat-cv-newer2.pdf" download class="px-8 py-3 rounded-full border border-gray-600 text-gray-300 font-semibold hover:border-white hover:text-white transition-all duration-300">
           <i class="fas fa-download mr-2"></i>Resume
         </a>
       </div>
@@ -934,6 +934,16 @@
       'flag{c0ns0l3_l0g_hunt3r}': 'Level 2: Console Explorer'
     };
 
+    // Helper: Escape HTML to prevent XSS
+    function escapeHtml(unsafe) {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    }
+
     if (termInput && termOutput) {
       termInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -941,8 +951,33 @@
           const args = rawInput.split(' ');
           const cmd = args[0].toLowerCase();
           
+          // Securely create DOM elements instead of using innerHTML with raw input
           const historyDiv = document.createElement('div');
-          historyDiv.innerHTML = `<div class="flex"><span class="text-accent mr-2">➜</span><span class="text-blue-400 mr-2">~</span><span class="text-white">${rawInput}</span></div>`;
+          
+          // Create the prompt line container
+          const promptContainer = document.createElement('div');
+          promptContainer.className = "flex";
+          
+          // Arrow
+          const arrowSpan = document.createElement('span');
+          arrowSpan.className = "text-accent mr-2";
+          arrowSpan.textContent = "➜";
+          
+          // Tilde
+          const tildeSpan = document.createElement('span');
+          tildeSpan.className = "text-blue-400 mr-2";
+          tildeSpan.textContent = "~";
+          
+          // User Input (Safe Sink)
+          const inputSpan = document.createElement('span');
+          inputSpan.className = "text-white";
+          inputSpan.textContent = rawInput; // textContent handles escaping automatically
+          
+          // Assemble
+          promptContainer.appendChild(arrowSpan);
+          promptContainer.appendChild(tildeSpan);
+          promptContainer.appendChild(inputSpan);
+          historyDiv.appendChild(promptContainer);
           
           let response = '';
           switch(cmd) {
@@ -1006,11 +1041,16 @@
               this.value = '';
               return;
             default:
-              response = `<span class="text-red-400">Command not found: ${cmd}</span>. Type 'help' for options.`;
+              // Securely handling the default case to prevent echoing malicious commands via XSS
+              response = `<span class="text-red-400">Command not found: ${escapeHtml(cmd)}</span>. Type 'help' for options.`;
           }
 
           if (response) {
-            historyDiv.innerHTML += `<div class="mb-2 ml-4">${response}</div>`;
+            // response contains trusted HTML from our switch case, so innerHTML is acceptable here
+            const responseDiv = document.createElement('div');
+            responseDiv.className = "mb-2 ml-4";
+            responseDiv.innerHTML = response;
+            historyDiv.appendChild(responseDiv);
           }
           
           termOutput.insertBefore(historyDiv, termOutput.lastElementChild);
