@@ -24,10 +24,11 @@
         extend: {
           colors: {
             bg: '#020617',
-            glass: 'rgba(30, 41, 59, 0.4)',
+            glass: 'rgba(30, 41, 59, 0.6)',
             accent: '#38bdf8', /* Sky 400 */
             secondary: '#818cf8', /* Indigo 400 */
             terminal: '#22c55e', /* Green for terminal vibes */
+            darkcard: '#0f172a',
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
@@ -35,6 +36,13 @@
           },
           animation: {
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'blink': 'blink 1s step-end infinite',
+          },
+          keyframes: {
+            blink: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0' },
+            }
           }
         }
       }
@@ -50,31 +58,18 @@
     }
 
     /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
     /* Aurora Background */
     .aurora-bg {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: -2;
-      pointer-events: none;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -2; pointer-events: none;
     }
     .aurora-blob {
-      position: absolute;
-      filter: blur(80px);
-      opacity: 0.25;
+      position: absolute; filter: blur(80px); opacity: 0.25;
       animation: float 20s infinite alternate;
     }
     .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #38bdf8; }
@@ -88,10 +83,7 @@
 
     /* Canvas */
     #particle-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
     }
 
     /* Glass Cards */
@@ -109,14 +101,67 @@
       transform: translateY(-5px);
     }
 
-    /* Timeline Styles */
-    .timeline-line {
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, #38bdf8, #818cf8, transparent);
+    /* Terminal Styles (New) */
+    .terminal-window {
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      font-family: 'JetBrains Mono', monospace;
+      overflow: hidden;
     }
-    
+    .terminal-header {
+      background-color: #1e293b;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #22c55e; }
+    .terminal-body {
+      padding: 16px;
+      height: 300px;
+      overflow-y: auto;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+    }
+    .cmd-input {
+      background: transparent;
+      border: none;
+      color: #e2e8f0;
+      outline: none;
+      width: 80%;
+    }
+
+    /* Modal Styles (New) */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      backdrop-filter: blur(5px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-content {
+      background: #1e293b;
+      max-width: 600px;
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid #38bdf8;
+      position: relative;
+      animation: modalPop 0.3s ease-out;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
     /* Typewriter Cursor */
     .typing-cursor::after {
       content: '|';
@@ -135,12 +180,10 @@
       opacity: 1;
       transform: translateY(0);
     }
-
-    /* Glitch Effect Text (Subtle) */
-    .glitch-hover:hover {
-      text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9;
-    }
   </style>
+  
+  <!-- EASTER EGG -->
+  <!-- flag{y0u_f0und_th3_h1dd3n_c0mm3nt_l3v3l_1} -->
 </head>
 <body class="antialiased">
 
@@ -154,16 +197,17 @@
 
   <!-- Navigation -->
   <nav class="fixed w-full z-50 top-0 left-0 border-b border-white/10 bg-slate-900/70 backdrop-blur-md">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <a href="#" class="font-mono text-xl font-bold text-accent tracking-tighter">&lt;NM/&gt;</a>
       
       <!-- Desktop Menu -->
       <div class="hidden md:flex space-x-8 text-sm font-mono text-gray-300">
         <a href="#about" class="hover:text-accent transition-colors">01. About</a>
-        <a href="#experience" class="hover:text-accent transition-colors">02. Experience</a>
-        <a href="#skills" class="hover:text-accent transition-colors">03. Skills</a>
-        <a href="#projects" class="hover:text-accent transition-colors">04. Projects</a>
-        <a href="#contact" class="hover:text-accent transition-colors">05. Contact</a>
+        <a href="#terminal" class="hover:text-accent transition-colors">02. Terminal</a>
+        <a href="#experience" class="hover:text-accent transition-colors">03. Exp</a>
+        <a href="#skills" class="hover:text-accent transition-colors">04. Skills</a>
+        <a href="#projects" class="hover:text-accent transition-colors">05. Work</a>
+        <a href="#contact" class="hover:text-accent transition-colors">06. Contact</a>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -175,17 +219,17 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-white/10 p-4 space-y-4">
       <a href="#about" class="block text-gray-300 hover:text-accent">About</a>
+      <a href="#terminal" class="block text-gray-300 hover:text-accent">Terminal</a>
       <a href="#experience" class="block text-gray-300 hover:text-accent">Experience</a>
       <a href="#skills" class="block text-gray-300 hover:text-accent">Skills</a>
       <a href="#projects" class="block text-gray-300 hover:text-accent">Projects</a>
-      <a href="#contact" class="block text-gray-300 hover:text-accent">Contact</a>
     </div>
   </nav>
 
   <main class="pt-20">
     
     <!-- HERO SECTION -->
-    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
+    <section id="about" class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
       <div class="font-mono text-accent mb-4 reveal active">Hi, my name is</div>
       <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight reveal active">
         Nijat Mammadov.
@@ -194,7 +238,7 @@
         I am a <span id="typewriter" class="text-accent typing-cursor"></span>
       </h2>
       <p class="max-w-xl text-gray-400 leading-relaxed mb-10 reveal active">
-        Investigating advanced security incidents, conducting threat research, and minimizing operational impact. Specializing in Offensive Security, DFIR, and Security Engineering.
+        Cybersecurity Engineer specializing in Offensive Security, DFIR, and threat research to minimize operational impact.
       </p>
       
       <div class="flex flex-wrap gap-4 justify-center reveal active">
@@ -211,10 +255,39 @@
       </div>
     </section>
 
+    <!-- INTERACTIVE TERMINAL SECTION (New) -->
+    <section id="terminal" class="py-12 px-4 max-w-4xl mx-auto reveal">
+      <div class="flex items-center gap-4 mb-6">
+        <span class="text-accent font-mono text-xl">02.</span>
+        <h2 class="text-2xl font-bold text-white">Interactive Terminal</h2>
+        <div class="h-px bg-gray-700 flex-grow"></div>
+      </div>
+      
+      <div class="terminal-window" onclick="document.getElementById('terminal-input').focus()">
+        <div class="terminal-header">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="text-xs text-gray-400 ml-2">guest@nijat-portfolio:~</span>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+          <div class="mb-2">
+            <span class="text-green-400">Welcome to Nijat's Portfolio CLI v1.0.0</span><br>
+            <span class="text-gray-400">Type 'help' to see available commands.</span>
+          </div>
+          <div class="flex">
+            <span class="text-accent mr-2">➜</span>
+            <span class="text-blue-400 mr-2">~</span>
+            <input type="text" id="terminal-input" class="cmd-input" autocomplete="off" autofocus>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- EXPERIENCE SECTION -->
     <section id="experience" class="py-24 px-4 max-w-4xl mx-auto">
       <div class="flex items-center gap-4 mb-12 reveal">
-        <span class="text-accent font-mono text-xl">02.</span>
+        <span class="text-accent font-mono text-xl">03.</span>
         <h2 class="text-3xl font-bold text-white">Work Experience</h2>
         <div class="h-px bg-gray-700 flex-grow max-w-xs"></div>
       </div>
@@ -233,12 +306,13 @@
               <span class="text-sm text-gray-400 font-mono mt-2 md:mt-0">Oct 2024 - Jan 2026</span>
             </div>
             <ul class="space-y-2 text-gray-400 text-sm list-disc list-inside marker:text-accent">
-              <li>Investigated and contained advanced security incidents (zero-day, APTs, DDoS, data exfiltration).</li>
-              <li>Conducted threat research using VirusTotal, ThreatFox, Shodan, and AbuseIPDB.</li>
-              <li>Deployed and monitored SentinelOne EDR for proactive monitoring and early detection.</li>
-              <li>Enhanced email security via Hornetsecurity (phishing detection, tracing, compliance).</li>
-              <li>Ran Nessus vulnerability scans and collaborated with IT to validate remediation.</li>
-              <li>Audited Azure identities and permissions to enforce least-privilege controls.</li>
+              <li>Investigated and contained advanced security incidents, including zero-day exploits, APTs, large-scale DDoS, and data exfiltration, minimizing operational impact.</li>
+              <li>Conducted threat research and profiling using VirusTotal, ThreatFox, Shodan, and AbuseIPDB to identify emerging risks.</li>
+              <li>Deployed and monitored SentinelOne EDR, analyzing endpoint logs and telemetry for proactive monitoring and early threat detection.</li>
+              <li>Enhanced email security via Hornetsecurity, performing phishing detection, message tracing, and compliance checks.</li>
+              <li>Ran Nessus vulnerability scans and collaborated with IT teams to validate remediation and reduce risk.</li>
+              <li>Audited Azure identities and permissions to detect anomalies and enforce least-privilege access controls.</li>
+              <li>Monitored security alerts and dark/deep web sources for leaked credentials and potential threats.</li>
             </ul>
           </div>
         </div>
@@ -288,7 +362,7 @@
     <!-- SKILLS SECTION -->
     <section id="skills" class="py-24 px-4 max-w-6xl mx-auto">
       <div class="flex items-center gap-4 mb-12 reveal">
-        <span class="text-accent font-mono text-xl">03.</span>
+        <span class="text-accent font-mono text-xl">04.</span>
         <h2 class="text-3xl font-bold text-white">Technical Arsenal</h2>
         <div class="h-px bg-gray-700 flex-grow max-w-xs"></div>
       </div>
@@ -309,6 +383,7 @@
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">Splunk / ELK</span>
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">SentinelOne</span>
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">Azure Security</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">WAF & Firewalls</span>
           </div>
         </div>
 
@@ -323,7 +398,7 @@
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Vulnerability Assessment</span>
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Nessus</span>
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Burp Suite</span>
-            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Web App Sec</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Linux / Unix</span>
           </div>
         </div>
 
@@ -336,21 +411,20 @@
           <div class="flex flex-wrap gap-2">
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Python</span>
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Bash Scripting</span>
-            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Linux/Unix</span>
-            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">WAF</span>
-            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Firewalls</span>
-            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">DLP</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Vibe Coding</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Git</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Docker</span>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- EDUCATION & CERTS -->
+    <!-- EDUCATION & CERTS (Updated Layout) -->
     <section class="py-24 px-4 max-w-6xl mx-auto bg-slate-900/30">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 reveal">
         
-        <!-- Education -->
+        <!-- Left Column: Education + Languages -->
         <div>
           <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Education</h3>
           <div class="space-y-6">
@@ -371,37 +445,67 @@
               </div>
             </div>
           </div>
+          
+          <div class="mt-8">
+            <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Languages</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center text-sm text-gray-300">
+                  <span>English</span>
+                  <span class="text-accent font-mono">C1 (Advanced)</span>
+              </div>
+              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-accent h-full w-[90%]"></div>
+              </div>
+
+              <div class="flex justify-between items-center text-sm text-gray-300 pt-2">
+                  <span>Azerbaijani</span>
+                  <span class="text-accent font-mono">C2 (Native)</span>
+              </div>
+              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-accent h-full w-full"></div>
+              </div>
+
+              <div class="flex justify-between items-center text-sm text-gray-300 pt-2">
+                  <span>Turkish</span>
+                  <span class="text-accent font-mono">C1 (Advanced)</span>
+              </div>
+              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-accent h-full w-[85%]"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Certs & Languages -->
+        <!-- Right Column: Certifications -->
         <div>
-          <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Certifications & Languages</h3>
-          <div class="space-y-6">
-            <div class="flex items-start">
-              <i class="fas fa-certificate text-yellow-500 mt-1 mr-3"></i>
-              <div>
-                <p class="font-bold text-white">Certified AppSec Practitioner (CAP)</p>
-                <p class="text-xs text-gray-500 font-mono">ID: 8192272</p>
+          <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Certifications</h3>
+          <div class="space-y-4">
+            <div class="glass-card p-4 hover:bg-white/5 transition-colors">
+              <div class="flex items-center gap-3">
+                 <i class="fas fa-certificate text-yellow-500 text-xl"></i>
+                 <div>
+                    <p class="font-bold text-white text-sm">Certified AppSec Practitioner (CAP)</p>
+                    <p class="text-xs text-gray-500 font-mono">ID: 8192272</p>
+                 </div>
               </div>
             </div>
-            <div class="flex items-start">
-              <i class="fas fa-certificate text-blue-500 mt-1 mr-3"></i>
-              <div>
-                <p class="font-bold text-white">SOC Analyst</p>
-                <p class="text-xs text-gray-500 font-mono">LetsDefend.io</p>
+            <div class="glass-card p-4 hover:bg-white/5 transition-colors">
+              <div class="flex items-center gap-3">
+                 <i class="fas fa-shield-virus text-blue-500 text-xl"></i>
+                 <div>
+                    <p class="font-bold text-white text-sm">SOC Analyst</p>
+                    <p class="text-xs text-gray-500 font-mono">LetsDefend.io</p>
+                 </div>
               </div>
             </div>
-            <div class="flex items-start">
-              <i class="fas fa-certificate text-green-500 mt-1 mr-3"></i>
-              <div>
-                <p class="font-bold text-white">IBM Cybersecurity Analyst</p>
+            <div class="glass-card p-4 hover:bg-white/5 transition-colors">
+              <div class="flex items-center gap-3">
+                 <i class="fas fa-certificate text-green-500 text-xl"></i>
+                 <div>
+                    <p class="font-bold text-white text-sm">IBM Cybersecurity Analyst</p>
+                    <p class="text-xs text-gray-500 font-mono">IBM Coursera</p>
+                 </div>
               </div>
-            </div>
-            
-            <div class="mt-8 pt-4 border-t border-gray-800">
-               <p class="text-sm font-mono text-gray-400">
-                 <span class="text-white">LANGUAGES:</span> English (C1) • Azerbaijani (C2) • Turkish (C1)
-               </p>
             </div>
           </div>
         </div>
@@ -429,27 +533,47 @@
         </div>
         <div class="glass-card p-6 flex flex-col items-center justify-center text-center hover:bg-white/5">
           <i class="fab fa-microsoft text-4xl text-white mb-4"></i>
-          <h3 class="font-bold text-lg mb-2">Others</h3>
+          <h3 class="font-bold text-lg mb-2">Microsoft</h3>
           <p class="text-sm text-gray-400">Contributor Recognition</p>
         </div>
       </div>
     </section>
 
-    <!-- ARTICLES & PROJECTS -->
+    <!-- PROJECTS & AI FOCUS -->
     <section id="projects" class="py-24 px-4 max-w-6xl mx-auto">
       <div class="flex items-center gap-4 mb-12 reveal">
-        <span class="text-accent font-mono text-xl">04.</span>
-        <h2 class="text-3xl font-bold text-white">Projects & Publications</h2>
+        <span class="text-accent font-mono text-xl">05.</span>
+        <h2 class="text-3xl font-bold text-white">Projects & Research</h2>
         <div class="h-px bg-gray-700 flex-grow max-w-xs"></div>
+      </div>
+
+      <!-- AI Focus Card (New) -->
+      <div class="glass-card p-8 md:p-10 mb-12 relative overflow-hidden reveal bg-slate-900/40">
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl"></div>
+        <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+          <div class="flex-grow">
+            <h3 class="text-2xl font-bold text-white mb-2">Current Focus: AI in Security</h3>
+            <p class="text-gray-300 leading-relaxed mb-4">
+              Actively researching the intersection of <span class="text-accent">LLMs and Cybersecurity</span>. Leveraging AI for automated threat hunting and log anomaly detection while studying Adversarial ML attacks.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span class="px-3 py-1 bg-slate-800 border border-slate-600 rounded-full text-xs font-mono text-white">Prompt Injection</span>
+              <span class="px-3 py-1 bg-slate-800 border border-slate-600 rounded-full text-xs font-mono text-white">Automated Triage</span>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+             <i class="fas fa-brain text-5xl text-accent animate-pulse-slow"></i>
+          </div>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
         
-        <!-- Project 1 -->
-        <a href="https://github.com/nijiinhell/4tail" target="_blank" class="glass-card p-6 group block">
+        <!-- Project 1 (With Modal) -->
+        <div class="glass-card p-6 group cursor-pointer hover:border-accent" onclick="openModal('modal-4tail')">
           <div class="flex justify-between items-center mb-4">
             <i class="far fa-folder text-3xl text-accent"></i>
-            <i class="fab fa-github text-xl text-gray-400 group-hover:text-white"></i>
+            <span class="text-xs text-accent border border-accent px-2 py-1 rounded">Read Case Study</span>
           </div>
           <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors">4tail</h3>
           <p class="text-gray-400 text-sm mt-3 mb-4">A simple but real-based modified tool designed for bug bounty hunters to streamline workflow.</p>
@@ -457,13 +581,13 @@
             <span>Bash</span>
             <span>Recon</span>
           </div>
-        </a>
+        </div>
 
-        <!-- Project 2 -->
-        <a href="https://github.com/nijiinhell/dencer" target="_blank" class="glass-card p-6 group block">
+        <!-- Project 2 (With Modal) -->
+        <div class="glass-card p-6 group cursor-pointer hover:border-accent" onclick="openModal('modal-dencer')">
           <div class="flex justify-between items-center mb-4">
             <i class="far fa-folder text-3xl text-accent"></i>
-            <i class="fab fa-github text-xl text-gray-400 group-hover:text-white"></i>
+            <span class="text-xs text-accent border border-accent px-2 py-1 rounded">Read Case Study</span>
           </div>
           <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors">Dencer</h3>
           <p class="text-gray-400 text-sm mt-3 mb-4">Secure Python tool for file encryption and decryption utilizing AES-GCM standards.</p>
@@ -471,8 +595,36 @@
             <span>Python</span>
             <span>Cryptography</span>
           </div>
-        </a>
-        
+        </div>
+
+        <!-- Project 3 (Mugetsu - New) -->
+        <div class="glass-card p-6 group cursor-pointer hover:border-accent" onclick="openModal('modal-mugetsu')">
+          <div class="flex justify-between items-center mb-4">
+            <i class="far fa-folder text-3xl text-accent"></i>
+            <span class="text-xs text-accent border border-accent px-2 py-1 rounded">Read Case Study</span>
+          </div>
+          <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors">Mugetsu</h3>
+          <p class="text-gray-400 text-sm mt-3 mb-4">Automated threat analysis tool integrated with VirusTotal to detect malicious activity with color-coded CLI output.</p>
+          <div class="flex gap-2 font-mono text-xs text-gray-500">
+            <span>Python</span>
+            <span>Threat Intel</span>
+          </div>
+        </div>
+
+        <!-- Project 4 (Secret - New) -->
+        <div class="glass-card p-6 group cursor-pointer hover:border-red-500 border-dashed border-gray-700" onclick="openModal('modal-secret')">
+          <div class="flex justify-between items-center mb-4">
+            <i class="fas fa-user-secret text-3xl text-red-500"></i>
+            <span class="text-xs text-red-500 border border-red-500 px-2 py-1 rounded">Confidential</span>
+          </div>
+          <h3 class="text-xl font-bold text-white group-hover:text-red-400 transition-colors">Project [REDACTED]</h3>
+          <p class="text-gray-400 text-sm mt-3 mb-4">A powerful, private offensive security toolset developed for specialized operations. Details classified.</p>
+          <div class="flex gap-2 font-mono text-xs text-gray-500">
+            <span>???</span>
+            <span>Offensive</span>
+          </div>
+        </div>
+
         <!-- Article 1 -->
         <a href="https://iamnijat.medium.com/advanced-how-do-hackers-hide-their-traces-on-fraud-process-with-real-examples-of-card-crypto-ce04cf5167d2" target="_blank" class="glass-card p-6 group block border-l-4 border-l-secondary">
           <div class="flex justify-between items-center mb-4">
@@ -498,7 +650,7 @@
 
     <!-- CONTACT -->
     <section id="contact" class="py-32 px-4 text-center max-w-2xl mx-auto">
-      <span class="text-accent font-mono">05. What's Next?</span>
+      <span class="text-accent font-mono">06. What's Next?</span>
       <h2 class="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">Get In Touch</h2>
       <p class="text-gray-400 mb-10 text-lg">
         Currently based in <span class="text-white font-semibold">Budapest, Hungary</span>. I am always open to discussing new opportunities, security research, or just saying hello.
@@ -521,8 +673,166 @@
 
   </main>
 
+  <!-- MODALS -->
+  <div id="modal-4tail" class="modal-overlay" onclick="closeModal(event, 'modal-4tail')">
+    <div class="modal-content p-8" onclick="event.stopPropagation()">
+      <button onclick="closeModal(null, 'modal-4tail')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      <h2 class="text-2xl font-bold text-white mb-4">4tail Case Study</h2>
+      <div class="space-y-4 text-gray-300">
+        <div>
+          <h4 class="text-accent font-mono text-sm">THE CHALLENGE</h4>
+          <p class="text-sm mt-1">Manual log analysis during bug bounties is slow and tedious. Grepping through massive files often leads to missed vulnerabilities.</p>
+        </div>
+        <div>
+          <h4 class="text-accent font-mono text-sm">THE SOLUTION</h4>
+          <p class="text-sm mt-1">I developed `4tail`, a Bash-based tool that automates the tailing of logs with real-time color-coding and regex-based filtering for specific error codes (403, 500, etc.).</p>
+        </div>
+        <div>
+          <h4 class="text-accent font-mono text-sm">THE RESULT</h4>
+          <p class="text-sm mt-1">Increased triage speed by approx 40% and successfully identified hidden administrative endpoints in a recent engagement.</p>
+        </div>
+        <div class="bg-black/50 p-3 rounded font-mono text-xs text-green-400">
+          $ ./4tail.sh -u target.com -w common.txt --filter 403
+        </div>
+      </div>
+      <a href="https://github.com/nijiinhell/4tail" target="_blank" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
+    </div>
+  </div>
+
+  <div id="modal-dencer" class="modal-overlay" onclick="closeModal(event, 'modal-dencer')">
+    <div class="modal-content p-8" onclick="event.stopPropagation()">
+      <button onclick="closeModal(null, 'modal-dencer')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      <h2 class="text-2xl font-bold text-white mb-4">Dencer Case Study</h2>
+      <div class="space-y-4 text-gray-300">
+        <div>
+          <h4 class="text-accent font-mono text-sm">THE CHALLENGE</h4>
+          <p class="text-sm mt-1">Need for a lightweight, CLI-based way to encrypt sensitive evidence files before transfer without relying on heavy third-party GUI tools.</p>
+        </div>
+        <div>
+          <h4 class="text-accent font-mono text-sm">THE SOLUTION</h4>
+          <p class="text-sm mt-1">Built `Dencer` using Python's cryptography library. It utilizes AES-GCM (Galois/Counter Mode) for authenticated encryption, ensuring both confidentiality and integrity.</p>
+        </div>
+         <div class="bg-black/50 p-3 rounded font-mono text-xs text-green-400">
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM<br>
+          # Authenticated Encryption Implementation
+        </div>
+      </div>
+      <a href="https://github.com/nijiinhell/dencer" target="_blank" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
+    </div>
+  </div>
+
+  <div id="modal-mugetsu" class="modal-overlay" onclick="closeModal(event, 'modal-mugetsu')">
+    <div class="modal-content p-8" onclick="event.stopPropagation()">
+      <button onclick="closeModal(null, 'modal-mugetsu')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      <h2 class="text-2xl font-bold text-white mb-4">Mugetsu Case Study</h2>
+      <div class="space-y-4 text-gray-300">
+        <div>
+          <h4 class="text-accent font-mono text-sm">THE CHALLENGE</h4>
+          <p class="text-sm mt-1">Analyzing suspicious files manually is risky and time-consuming. Security teams need rapid initial triage before deep analysis.</p>
+        </div>
+        <div>
+          <h4 class="text-accent font-mono text-sm">THE SOLUTION</h4>
+          <p class="text-sm mt-1">Mugetsu provides automated threat analysis by integrating with VirusTotal. It scans file hashes and provides instant, color-coded CLI output on malicious indicators.</p>
+        </div>
+        <div class="bg-black/50 p-3 rounded font-mono text-xs text-green-400">
+          $ python3 mugetsu.py -f malware_sample.exe<br>
+          [+] Detection Ratio: 45/70 (MALICIOUS)
+        </div>
+      </div>
+      <a href="https://github.com/nijiinhell/Mugetsu" target="_blank" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
+    </div>
+  </div>
+
+  <div id="modal-secret" class="modal-overlay" onclick="closeModal(event, 'modal-secret')">
+    <div class="modal-content p-8 border-red-500 border" onclick="event.stopPropagation()">
+      <button onclick="closeModal(null, 'modal-secret')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      <h2 class="text-2xl font-bold text-red-500 mb-4">Project [REDACTED]</h2>
+      <div class="space-y-4 text-gray-300">
+        <div class="p-4 bg-red-900/20 border border-red-900 rounded">
+          <p class="text-sm text-red-300 font-mono"><i class="fas fa-lock mr-2"></i>CLASSIFIED INFORMATION</p>
+        </div>
+        <div>
+          <h4 class="text-red-400 font-mono text-sm">OVERVIEW</h4>
+          <p class="text-sm mt-1">This project involves advanced offensive security capabilities developed for specialized red team operations. It bypasses standard detection mechanisms using custom obfuscation techniques.</p>
+        </div>
+        <div>
+          <h4 class="text-red-400 font-mono text-sm">CAPABILITIES</h4>
+          <ul class="list-disc list-inside text-sm mt-1">
+            <li>Automated C2 Infrastructure deployment</li>
+            <li>Custom payload generation</li>
+            <li>Evasion of modern EDR solutions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- SCRIPTS -->
   <script>
+    // --- EASTER EGG: Console Flag ---
+    console.log(
+      "%cHello Hunter! looking for this? flag{c0ns0l3_l0g_hunt3r}", 
+      "color: #38bdf8; background: #020617; padding: 8px; font-size: 16px; border: 1px solid #38bdf8; border-radius: 4px;"
+    );
+
+    // --- Modal Logic ---
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+    function closeModal(event, id) {
+      if (event && event.target !== event.currentTarget && event.target.tagName !== 'BUTTON' && event.target.parentElement.tagName !== 'BUTTON') return;
+      document.getElementById(id).classList.remove('open');
+      document.body.style.overflow = 'auto';
+    }
+
+    // --- Terminal Logic ---
+    const termInput = document.getElementById('terminal-input');
+    const termOutput = document.getElementById('terminal-output');
+    
+    if (termInput && termOutput) {
+      termInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const cmd = this.value.trim().toLowerCase();
+          const historyDiv = document.createElement('div');
+          historyDiv.innerHTML = `<div class="flex"><span class="text-accent mr-2">➜</span><span class="text-blue-400 mr-2">~</span><span class="text-white">${this.value}</span></div>`;
+          
+          let response = '';
+          switch(cmd) {
+            case 'help':
+              response = '<span class="text-yellow-400">Available commands:</span><br>  whoami   - Display current user info<br>  contact  - Show contact email<br>  skills   - List core skills<br>  clear    - Clear terminal<br>  sudo     - ???';
+              break;
+            case 'whoami':
+              response = 'guest (Visitor) <br> <span class="text-gray-500">Privilege Level: Low</span>';
+              break;
+            case 'contact':
+              response = 'Email: <a href="mailto:nijatmmmdv@gmail.com" class="text-accent hover:underline">nijatmmmdv@gmail.com</a>';
+              break;
+            case 'skills':
+              response = 'Python, Bash, Splunk, SentinelOne, Nessus, Burp Suite, Azure Security';
+              break;
+            case 'sudo':
+              response = '<span class="text-red-500">Permission denied. You are not in the sudoers file. This incident will be reported.</span>';
+              break;
+            case 'clear':
+              termOutput.innerHTML = '';
+              this.value = '';
+              return;
+            default:
+              response = `<span class="text-red-400">Command not found: ${cmd}</span>. Type 'help' for options.`;
+          }
+
+          if (response) {
+            historyDiv.innerHTML += `<div class="mb-2 ml-4">${response}</div>`;
+          }
+          
+          termOutput.insertBefore(historyDiv, termOutput.lastElementChild);
+          termOutput.scrollTop = termOutput.scrollHeight;
+          this.value = '';
+        }
+      });
+    }
+
     // --- Typewriter Effect ---
     const textElement = document.getElementById('typewriter');
     const texts = ['Cybersecurity Engineer', 'Penetration Tester', 'SOC Analyst', 'Threat Hunter'];
@@ -571,7 +881,7 @@
     revealElements.forEach(el => revealObserver.observe(el));
 
 
-    // --- Particle Canvas (Optimized) ---
+    // --- Particle Canvas ---
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
     
@@ -600,7 +910,7 @@
         if (this.y < 0 || this.y > height) this.vy *= -1;
       }
       draw() {
-        ctx.fillStyle = 'rgba(148, 163, 184, 0.3)'; // Slate 400
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.3)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -609,7 +919,7 @@
 
     function initParticles() {
       particles = [];
-      const count = Math.min(Math.floor(width * height / 15000), 100); // Limit particles for performance
+      const count = Math.min(Math.floor(width * height / 15000), 100);
       for (let i = 0; i < count; i++) particles.push(new Particle());
     }
     
