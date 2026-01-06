@@ -238,14 +238,15 @@
         I am a <span id="typewriter" class="text-accent typing-cursor"></span>
       </h2>
       <p class="max-w-xl text-gray-400 leading-relaxed mb-10 reveal active">
-        Cybersecurity Engineer specializing in Offensive and Defensive Security.
+        Cybersecurity Engineer specializing in Offensive Security, DFIR, and threat research to minimize operational impact.
       </p>
       
       <div class="flex flex-wrap gap-4 justify-center reveal active">
-        <a href="#contact" class="px-8 py-3 rounded-full bg-accent/10 border border-accent text-accent font-semibold hover:bg-accent hover:text-bg transition-all duration-300">
+        <!-- Changed to open modal instead of mailto directly -->
+        <button onclick="openModal('modal-contact')" class="px-8 py-3 rounded-full bg-accent/10 border border-accent text-accent font-semibold hover:bg-accent hover:text-bg transition-all duration-300">
           Get In Touch
-        </a>
-        <a href="nijat-cv-newer2 - new.pdf" download class="px-8 py-3 rounded-full border border-gray-600 text-gray-300 font-semibold hover:border-white hover:text-white transition-all duration-300">
+        </button>
+        <a href="nijat-cv-newer2.pdf" download class="px-8 py-3 rounded-full border border-gray-600 text-gray-300 font-semibold hover:border-white hover:text-white transition-all duration-300">
           <i class="fas fa-download mr-2"></i>Resume
         </a>
       </div>
@@ -255,7 +256,7 @@
       </div>
     </section>
 
-    <!-- INTERACTIVE TERMINAL SECTION (New) -->
+    <!-- INTERACTIVE TERMINAL SECTION -->
     <section id="terminal" class="py-12 px-4 max-w-4xl mx-auto reveal">
       <div class="flex items-center gap-4 mb-6">
         <span class="text-accent font-mono text-xl">02.</span>
@@ -412,97 +413,95 @@
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Python</span>
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Bash Scripting</span>
             <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Vibe Coding</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Git</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Docker</span>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- EDUCATION & CERTS (Updated Layout) -->
-    <section class="py-24 px-4 max-w-6xl mx-auto bg-slate-900/30">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 reveal">
+    <!-- CREDENTIALS (Updated Layout: 3 Columns) -->
+    <section class="py-24 px-4 max-w-7xl mx-auto bg-slate-900/30">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
         
-        <!-- Left Column: Education + Languages -->
-        <div>
-          <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Education</h3>
-          <div class="space-y-6">
-            <div class="flex group">
-              <div class="mr-4 mt-1 text-accent"><i class="fas fa-graduation-cap"></i></div>
+        <!-- Column 1: Education -->
+        <div class="flex flex-col h-full">
+          <h3 class="text-xl font-bold text-white mb-6 border-b border-gray-700 pb-2 flex items-center gap-2">
+            <i class="fas fa-graduation-cap text-accent"></i> Education
+          </h3>
+          <div class="glass-card p-6 flex-grow">
+            <div class="space-y-8">
               <div>
-                <h4 class="font-bold text-white group-hover:text-accent transition-colors">Master of Cybersecurity</h4>
+                <h4 class="font-bold text-white text-lg">Master of Cybersecurity</h4>
                 <p class="text-gray-400 text-sm">Eötvös Loránd University</p>
                 <p class="text-gray-500 text-xs font-mono mt-1">2023 - 2025</p>
               </div>
-            </div>
-            <div class="flex group">
-              <div class="mr-4 mt-1 text-accent"><i class="fas fa-university"></i></div>
               <div>
-                <h4 class="font-bold text-white group-hover:text-accent transition-colors">Bachelor of IT</h4>
+                <h4 class="font-bold text-white text-lg">Bachelor of IT</h4>
                 <p class="text-gray-400 text-sm">Baku Engineering University</p>
                 <p class="text-gray-500 text-xs font-mono mt-1">2019 - 2023 | GPA: 88/100</p>
               </div>
             </div>
           </div>
-          
-          <div class="mt-8">
-            <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Languages</h3>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center text-sm text-gray-300">
-                  <span>English</span>
-                  <span class="text-accent font-mono">C1 (Advanced)</span>
-              </div>
-              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
-                  <div class="bg-accent h-full w-[90%]"></div>
-              </div>
+        </div>
 
-              <div class="flex justify-between items-center text-sm text-gray-300 pt-2">
-                  <span>Azerbaijani</span>
-                  <span class="text-accent font-mono">C2 (Native)</span>
-              </div>
-              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
-                  <div class="bg-accent h-full w-full"></div>
-              </div>
-
-              <div class="flex justify-between items-center text-sm text-gray-300 pt-2">
-                  <span>Turkish</span>
-                  <span class="text-accent font-mono">C1 (Advanced)</span>
-              </div>
-              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
-                  <div class="bg-accent h-full w-[85%]"></div>
-              </div>
+        <!-- Column 2: Certifications -->
+        <div class="flex flex-col h-full">
+          <h3 class="text-xl font-bold text-white mb-6 border-b border-gray-700 pb-2 flex items-center gap-2">
+            <i class="fas fa-certificate text-yellow-500"></i> Certifications
+          </h3>
+          <div class="space-y-4">
+            <div class="glass-card p-4 hover:bg-white/5 transition-colors border-l-4 border-l-yellow-500">
+              <p class="font-bold text-white text-sm">Certified AppSec Practitioner (CAP)</p>
+              <p class="text-xs text-gray-500 font-mono mt-1">ID: 8192272</p>
+            </div>
+            <div class="glass-card p-4 hover:bg-white/5 transition-colors border-l-4 border-l-blue-500">
+              <p class="font-bold text-white text-sm">SOC Analyst</p>
+              <p class="text-xs text-gray-500 font-mono mt-1">LetsDefend.io</p>
+            </div>
+            <div class="glass-card p-4 hover:bg-white/5 transition-colors border-l-4 border-l-green-500">
+              <p class="font-bold text-white text-sm">IBM Cybersecurity Analyst</p>
+              <p class="text-xs text-gray-500 font-mono mt-1">IBM Coursera</p>
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Certifications -->
-        <div>
-          <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Certifications</h3>
-          <div class="space-y-4">
-            <div class="glass-card p-4 hover:bg-white/5 transition-colors">
-              <div class="flex items-center gap-3">
-                 <i class="fas fa-certificate text-yellow-500 text-xl"></i>
-                 <div>
-                    <p class="font-bold text-white text-sm">Certified AppSec Practitioner (CAP)</p>
-                    <p class="text-xs text-gray-500 font-mono">ID: 8192272</p>
-                 </div>
+        <!-- Column 3: Languages (Centralized/Independent) -->
+        <div class="flex flex-col h-full">
+          <h3 class="text-xl font-bold text-white mb-6 border-b border-gray-700 pb-2 flex items-center gap-2">
+            <i class="fas fa-language text-purple-400"></i> Languages
+          </h3>
+          <div class="glass-card p-6 flex-grow flex flex-col justify-center">
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-white font-medium">English</span>
+                  <span class="text-accent text-xs font-mono bg-accent/10 px-2 py-1 rounded">C1 (Advanced)</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div class="bg-accent h-full w-[90%]"></div>
+                </div>
               </div>
-            </div>
-            <div class="glass-card p-4 hover:bg-white/5 transition-colors">
-              <div class="flex items-center gap-3">
-                 <i class="fas fa-shield-virus text-blue-500 text-xl"></i>
-                 <div>
-                    <p class="font-bold text-white text-sm">SOC Analyst</p>
-                    <p class="text-xs text-gray-500 font-mono">LetsDefend.io</p>
-                 </div>
+              
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-white font-medium">Azerbaijani</span>
+                  <span class="text-accent text-xs font-mono bg-accent/10 px-2 py-1 rounded">C2 (Native)</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div class="bg-accent h-full w-full"></div>
+                </div>
               </div>
-            </div>
-            <div class="glass-card p-4 hover:bg-white/5 transition-colors">
-              <div class="flex items-center gap-3">
-                 <i class="fas fa-certificate text-green-500 text-xl"></i>
-                 <div>
-                    <p class="font-bold text-white text-sm">IBM Cybersecurity Analyst</p>
-                    <p class="text-xs text-gray-500 font-mono">IBM Coursera</p>
-                 </div>
+
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-white font-medium">Turkish</span>
+                  <span class="text-accent text-xs font-mono bg-accent/10 px-2 py-1 rounded">C1 (Advanced)</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div class="bg-accent h-full w-[85%]"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -531,7 +530,7 @@
         </div>
         <div class="glass-card p-6 flex flex-col items-center justify-center text-center hover:bg-white/5">
           <i class="fab fa-microsoft text-4xl text-white mb-4"></i>
-          <h3 class="font-bold text-lg mb-2">Others</h3>
+          <h3 class="font-bold text-lg mb-2">Microsoft</h3>
           <p class="text-sm text-gray-400">Contributor Recognition</p>
         </div>
       </div>
@@ -545,7 +544,7 @@
         <div class="h-px bg-gray-700 flex-grow max-w-xs"></div>
       </div>
 
-      <!-- AI Focus Card (New) -->
+      <!-- AI Focus Card -->
       <div class="glass-card p-8 md:p-10 mb-12 relative overflow-hidden reveal bg-slate-900/40">
         <div class="absolute -right-20 -top-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl"></div>
         <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
@@ -595,7 +594,7 @@
           </div>
         </div>
 
-        <!-- Project 3 (Mugetsu - New) -->
+        <!-- Project 3 (Mugetsu) -->
         <div class="glass-card p-6 group cursor-pointer hover:border-accent" onclick="openModal('modal-mugetsu')">
           <div class="flex justify-between items-center mb-4">
             <i class="far fa-folder text-3xl text-accent"></i>
@@ -609,7 +608,7 @@
           </div>
         </div>
 
-        <!-- Project 4 (Secret - New) -->
+        <!-- Project 4 (Secret) -->
         <div class="glass-card p-6 group cursor-pointer hover:border-red-500 border-dashed border-gray-700" onclick="openModal('modal-secret')">
           <div class="flex justify-between items-center mb-4">
             <i class="fas fa-user-secret text-3xl text-red-500"></i>
@@ -624,17 +623,17 @@
         </div>
 
         <!-- Article 1 -->
-        <a href="https://iamnijat.medium.com/advanced-how-do-hackers-hide-their-traces-on-fraud-process-with-real-examples-of-card-crypto-ce04cf5167d2" target="_blank" class="glass-card p-6 group block border-l-4 border-l-secondary">
+        <a href="https://iamnijat.medium.com/advanced-how-do-hackers-hide-their-traces-on-fraud-process-with-real-examples-of-card-crypto-ce04cf5167d2" target="_blank" rel="noopener noreferrer" class="glass-card p-6 group block border-l-4 border-l-secondary">
           <div class="flex justify-between items-center mb-4">
             <i class="fas fa-newspaper text-3xl text-secondary"></i>
             <i class="fas fa-external-link-alt text-xl text-gray-400 group-hover:text-white"></i>
           </div>
-          <h3 class="text-xl font-bold text-white group-hover:text-secondary transition-colors">How Hackers Hide Their Traces [ADVANCED]</h3>
+          <h3 class="text-xl font-bold text-white group-hover:text-secondary transition-colors">How Hackers Hide Their Traces</h3>
           <p class="text-gray-400 text-sm mt-3">Deep dive into operational security (OpSec) used by fraudsters.</p>
         </a>
 
         <!-- Article 2 -->
-        <a href="https://iamnijat.medium.com/boost-your-subdomain-enumeration-44ab27343c1f" target="_blank" class="glass-card p-6 group block border-l-4 border-l-secondary">
+        <a href="https://iamnijat.medium.com/boost-your-subdomain-enumeration-44ab27343c1f" target="_blank" rel="noopener noreferrer" class="glass-card p-6 group block border-l-4 border-l-secondary">
           <div class="flex justify-between items-center mb-4">
             <i class="fas fa-newspaper text-3xl text-secondary"></i>
             <i class="fas fa-external-link-alt text-xl text-gray-400 group-hover:text-white"></i>
@@ -654,14 +653,15 @@
         Currently based in <span class="text-white font-semibold">Budapest, Hungary</span>. I am always open to discussing new opportunities, security research, or just saying hello.
       </p>
       
-      <a href="mailto:nijatmmmdv@gmail.com" class="inline-block px-8 py-4 rounded bg-transparent border border-accent text-accent font-mono text-sm hover:bg-accent/10 transition-all">
+      <!-- Changed to open contact modal -->
+      <button onclick="openModal('modal-contact')" class="inline-block px-8 py-4 rounded bg-transparent border border-accent text-accent font-mono text-sm hover:bg-accent/10 transition-all">
         Say Hello
-      </a>
+      </button>
 
       <div class="flex justify-center gap-8 mt-16 text-2xl text-gray-400">
-        <a href="https://github.com/nijiinhell" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/nijat-mammadov-cyber/" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-linkedin"></i></a>
-        <a href="https://iamnijat.medium.com/" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-medium"></i></a>
+        <a href="https://github.com/nijiinhell" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/nijat-mammadov-cyber/" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-linkedin"></i></a>
+        <a href="https://iamnijat.medium.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-medium"></i></a>
       </div>
     </section>
 
@@ -672,6 +672,30 @@
   </main>
 
   <!-- MODALS -->
+  
+  <!-- Contact Modal (Formspree Integration) -->
+  <div id="modal-contact" class="modal-overlay" onclick="closeModal(event, 'modal-contact')">
+    <div class="modal-content p-8" onclick="event.stopPropagation()">
+      <button onclick="closeModal(null, 'modal-contact')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      <h2 class="text-2xl font-bold text-white mb-6">Send Message</h2>
+      
+      <form id="contact-form" action="https://formspree.io/f/mjgknbzd" method="POST" class="space-y-4">
+        <div>
+          <label class="block text-gray-400 text-sm font-mono mb-2" for="email">Your Email</label>
+          <input type="email" name="email" id="email" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:border-accent focus:outline-none" placeholder="you@example.com" required>
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm font-mono mb-2" for="message">Message</label>
+          <textarea name="message" id="message" rows="4" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:border-accent focus:outline-none" placeholder="Write your message here..." required></textarea>
+        </div>
+        <button type="submit" id="submit-btn" class="w-full bg-accent text-bg font-bold py-3 rounded hover:bg-white transition-colors">
+          Send Message
+        </button>
+        <p id="contact-status" class="text-xs text-center font-mono mt-2 min-h-[1.5em]"></p>
+      </form>
+    </div>
+  </div>
+
   <div id="modal-4tail" class="modal-overlay" onclick="closeModal(event, 'modal-4tail')">
     <div class="modal-content p-8" onclick="event.stopPropagation()">
       <button onclick="closeModal(null, 'modal-4tail')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
@@ -693,7 +717,7 @@
           $ ./4tail.sh -u target.com -w common.txt --filter 403
         </div>
       </div>
-      <a href="https://github.com/nijiinhell/4tail" target="_blank" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
+      <a href="https://github.com/nijiinhell/4tail" target="_blank" rel="noopener noreferrer" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
     </div>
   </div>
 
@@ -715,7 +739,7 @@
           # Authenticated Encryption Implementation
         </div>
       </div>
-      <a href="https://github.com/nijiinhell/dencer" target="_blank" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
+      <a href="https://github.com/nijiinhell/dencer" target="_blank" rel="noopener noreferrer" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
     </div>
   </div>
 
@@ -737,7 +761,7 @@
           [+] Detection Ratio: 45/70 (MALICIOUS)
         </div>
       </div>
-      <a href="https://github.com/nijiinhell/Mugetsu" target="_blank" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
+      <a href="https://github.com/nijiinhell/Mugetsu" target="_blank" rel="noopener noreferrer" class="inline-block mt-6 text-accent hover:underline text-sm font-mono">View Source Code -></a>
     </div>
   </div>
 
@@ -751,12 +775,14 @@
         </div>
         <div>
           <h4 class="text-red-400 font-mono text-sm">OVERVIEW</h4>
-          <p class="text-sm mt-1">This project involves advanced offensive security capabilities developed for specialized red team operations.</p>
+          <p class="text-sm mt-1">This project involves advanced offensive security capabilities developed for specialized red team operations. It bypasses standard detection mechanisms using custom obfuscation techniques.</p>
         </div>
         <div>
           <h4 class="text-red-400 font-mono text-sm">CAPABILITIES</h4>
           <ul class="list-disc list-inside text-sm mt-1">
-            <li>Of course, this is a secret too</li>
+            <li>Automated C2 Infrastructure deployment</li>
+            <li>Custom payload generation</li>
+            <li>Evasion of modern EDR solutions</li>
           </ul>
         </div>
       </div>
@@ -780,6 +806,60 @@
       if (event && event.target !== event.currentTarget && event.target.tagName !== 'BUTTON' && event.target.parentElement.tagName !== 'BUTTON') return;
       document.getElementById(id).classList.remove('open');
       document.body.style.overflow = 'auto';
+    }
+
+    // --- Contact Form Logic (Formspree AJAX) ---
+    const contactForm = document.getElementById("contact-form");
+    
+    if (contactForm) {
+      contactForm.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const statusText = document.getElementById("contact-status");
+        const btn = document.getElementById("submit-btn");
+        const data = new FormData(e.target);
+        
+        // Visual feedback
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending...';
+        statusText.textContent = "";
+        
+        try {
+          const response = await fetch(e.target.action, {
+            method: contactForm.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+          });
+          
+          if (response.ok) {
+            statusText.textContent = "Message sent successfully!";
+            statusText.className = "text-xs text-center font-mono mt-2 text-green-400";
+            contactForm.reset();
+            setTimeout(() => {
+              closeModal(null, 'modal-contact');
+              btn.disabled = false;
+              btn.textContent = "Send Message";
+              statusText.textContent = "";
+            }, 2000);
+          } else {
+            const result = await response.json();
+            if (Object.hasOwn(result, 'errors')) {
+              statusText.textContent = result["errors"].map(error => error["message"]).join(", ");
+            } else {
+              statusText.textContent = "Oops! There was a problem submitting your form";
+            }
+            statusText.className = "text-xs text-center font-mono mt-2 text-red-400";
+            btn.disabled = false;
+            btn.textContent = "Send Message";
+          }
+        } catch (error) {
+          statusText.textContent = "Error sending message. Please try again.";
+          statusText.className = "text-xs text-center font-mono mt-2 text-red-400";
+          btn.disabled = false;
+          btn.textContent = "Send Message";
+        }
+      });
     }
 
     // --- Terminal Logic ---
