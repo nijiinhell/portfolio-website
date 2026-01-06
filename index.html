@@ -1,486 +1,644 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
-  window.va = window.va || function () { (window.va.q = window.va.q || []).push(arguments); };
-  window.va('set', 'mode', 'auto');
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
-  <!-- SEO & Social Metadata -->
-  <title>Nijat Mammadov | Cybersecurity Portfolio</title>
-  <meta name="description" content="A cybersecurity professional specializing in offensive and defensive security.">
-  <meta name="author" content="Nijat Mammadov">
-  <meta property="og:title" content="Nijat Mammadov | Portfolio">
-  <meta property="og:description" content="A portfolio showcasing skills in penetration testing, SOC analysis, threat intelligence, information security and security research.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://portfolio-website-wine-seven-97.vercel.app/">
-  
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <title>Nijat Mammadov | Cybersecurity Engineer</title>
+  <meta name="description" content="Portfolio of Nijat Mammadov - Cybersecurity Engineer specializing in offensive and defensive security.">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Custom Styles -->
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Custom Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#020617',
+            glass: 'rgba(30, 41, 59, 0.4)',
+            accent: '#38bdf8', /* Sky 400 */
+            secondary: '#818cf8', /* Indigo 400 */
+            terminal: '#22c55e', /* Green for terminal vibes */
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    :root {
-      --bg: #020617; /* Dark Navy Blue */
-      --accent: #38bdf8; /* Sky Blue */
-      --text-primary: #e2e8f0; /* Light Slate */
-      --text-secondary: #94a3b8; /* Slate */
-      --glass-bg: rgba(30, 41, 59, 0.5); /* Semi-transparent Slate */
-      --glass-border: rgba(255, 255, 255, 0.1);
-    }
-
-    html { scroll-behavior: smooth; }
-
+    /* Base Styles */
     body {
-      background-color: var(--bg);
-      color: var(--text-primary);
+      background-color: #020617;
+      color: #e2e8f0;
       overflow-x: hidden;
-      font-family: 'Inter', sans-serif;
     }
-    
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-    /* Aurora Background Animation */
-    .aurora-background {
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* Aurora Background */
+    .aurora-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       z-index: -2;
-      overflow: hidden;
+      pointer-events: none;
     }
-    .aurora-shape {
+    .aurora-blob {
       position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.3;
+      filter: blur(80px);
+      opacity: 0.25;
+      animation: float 20s infinite alternate;
     }
-    .shape1 {
-      width: 600px; height: 600px;
-      background-color: #38bdf8; /* Sky Blue */
-      top: -200px; left: -200px;
-      animation: move 20s infinite alternate ease-in-out;
-    }
-    .shape2 {
-      width: 500px; height: 500px;
-      background-color: #818cf8; /* Indigo */
-      bottom: -150px; right: -150px;
-      animation: move 25s infinite alternate ease-in-out;
-    }
-    .shape3 {
-      width: 400px; height: 400px;
-      background-color: #f471b5; /* Pink */
-      bottom: 150px; left: 100px;
-      animation: move 15s infinite alternate ease-in-out;
+    .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #38bdf8; }
+    .blob-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #818cf8; animation-delay: -5s; }
+    .blob-3 { top: 40%; left: 40%; width: 30vw; height: 30vw; background: #c084fc; animation-delay: -10s; }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(20px, 40px) scale(1.1); }
     }
 
-    @keyframes move {
-      from { transform: translate(0, 0) rotate(0deg) scale(1); }
-      to { transform: translate(100px, 50px) rotate(45deg) scale(1.1); }
+    /* Canvas */
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
     }
 
-    /* Frosted Glass Card Style */
+    /* Glass Cards */
     .glass-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-      border-radius: 1.25rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
-      opacity: 0;
-      transform: translateY(40px);
-      padding: 1.5rem;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      transition: all 0.3s ease;
     }
     .glass-card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 0 40px rgba(56, 189, 248, 0.25);
       border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+      transform: translateY(-5px);
     }
+
+    /* Timeline Styles */
+    .timeline-line {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #38bdf8, #818cf8, transparent);
+    }
+    
+    /* Typewriter Cursor */
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 1s step-start infinite;
+      color: #38bdf8;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Reveal on Scroll */
     .reveal {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
     }
-
-    /* Button Style */
-    .modern-btn {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 0.75rem 1.75rem;
-      border-radius: 9999px;
-      background-color: var(--accent);
-      color: var(--bg);
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border: 1px solid transparent;
-    }
-    .modern-btn:hover {
-      background-color: transparent;
-      color: var(--accent);
-      border-color: var(--accent);
-      transform: scale(1.05);
-    }
-    .modern-btn.secondary {
-        background-color: transparent;
-        color: var(--text-primary);
-        border-color: var(--text-secondary);
-    }
-    .modern-btn.secondary:hover {
-        color: var(--accent);
-        border-color: var(--accent);
-    }
-
-    /* Scroll Indicator */
-    .scroll-indicator {
-      position: fixed; bottom: 20px; left: 50%;
-      transform: translateX(-50%);
-      text-align: center; font-size: 0.9rem;
-      color: var(--text-secondary);
+    .reveal.active {
       opacity: 1;
-      transition: opacity 0.5s ease;
-      z-index: 50;
-      animation: bounce 2s infinite;
+      transform: translateY(0);
     }
-    .scroll-indicator.hidden { opacity: 0; }
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(10px); }
-    }
-    
-    /* Section Divider */
-    .section-divider {
-      width: 60%;
-      max-width: 300px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(56, 189, 248, 0.25), transparent);
-      margin: 0 auto;
-    }
-    
-    /* Particle Canvas Style */
-    #particle-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
+
+    /* Glitch Effect Text (Subtle) */
+    .glitch-hover:hover {
+      text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9;
     }
   </style>
 </head>
-<body class="font-sans">
+<body class="antialiased">
 
-  <div class="aurora-background">
-    <div class="aurora-shape shape1"></div>
-    <div class="aurora-shape shape2"></div>
-    <div class="aurora-shape shape3"></div>
+  <!-- Backgrounds -->
+  <div class="aurora-bg">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+    <div class="aurora-blob blob-3"></div>
   </div>
-  
   <canvas id="particle-canvas"></canvas>
 
-  <!-- HERO -->
-  <section class="relative flex flex-col items-center justify-center text-center h-screen max-w-4xl mx-auto px-4">
-    <h1 class="text-4xl md:text-5xl font-bold" style="color: var(--accent);">Ready to Build a More Secure Future?</h1>
-    <p class="text-lg mt-6 text-gray-200">I'm Nijat Mammadov</p>
-    <p class="text-base text-gray-400 mt-2 max-w-2xl">An experienced cybersecurity professional specializing in protecting systems, networks, and applications through both offensive and defensive security practices.</p>
-    <div class="mt-8 flex flex-wrap justify-center">
-      <a href="#contact" class="modern-btn">Let's Connect</a>
-      <a href="nijat-cv-newer2.pdf" download class="modern-btn secondary">Download CV</a>
+  <!-- Navigation -->
+  <nav class="fixed w-full z-50 top-0 left-0 border-b border-white/10 bg-slate-900/70 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="#" class="font-mono text-xl font-bold text-accent tracking-tighter">&lt;NM/&gt;</a>
+      
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex space-x-8 text-sm font-mono text-gray-300">
+        <a href="#about" class="hover:text-accent transition-colors">01. About</a>
+        <a href="#experience" class="hover:text-accent transition-colors">02. Experience</a>
+        <a href="#skills" class="hover:text-accent transition-colors">03. Skills</a>
+        <a href="#projects" class="hover:text-accent transition-colors">04. Projects</a>
+        <a href="#contact" class="hover:text-accent transition-colors">05. Contact</a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden text-white focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
     </div>
-  </section>
 
-  <!-- Main Content Wrapper -->
-  <main class="relative z-10">
-    <div class="section-divider mb-24"></div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-white/10 p-4 space-y-4">
+      <a href="#about" class="block text-gray-300 hover:text-accent">About</a>
+      <a href="#experience" class="block text-gray-300 hover:text-accent">Experience</a>
+      <a href="#skills" class="block text-gray-300 hover:text-accent">Skills</a>
+      <a href="#projects" class="block text-gray-300 hover:text-accent">Projects</a>
+      <a href="#contact" class="block text-gray-300 hover:text-accent">Contact</a>
+    </div>
+  </nav>
 
-    <!-- Hall of Fame -->
-    <section id="hof" class="py-24 pt-0">
-      <div class="max-w-5xl mx-auto text-center px-4">
-        <h2 class="text-3xl font-semibold mb-12" style="color: var(--accent);">Hall of Fame</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="glass-card flex flex-col items-center justify-center text-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg" alt="NASA" class="h-10 w-auto">
-            <p class="mt-4 text-gray-300">Recognized for identifying vulnerabilities in NASA systems.</p>
+  <main class="pt-20">
+    
+    <!-- HERO SECTION -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
+      <div class="font-mono text-accent mb-4 reveal active">Hi, my name is</div>
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight reveal active">
+        Nijat Mammadov.
+      </h1>
+      <h2 class="text-2xl md:text-4xl text-gray-400 font-mono mb-6 reveal active">
+        I am a <span id="typewriter" class="text-accent typing-cursor"></span>
+      </h2>
+      <p class="max-w-xl text-gray-400 leading-relaxed mb-10 reveal active">
+        Investigating advanced security incidents, conducting threat research, and minimizing operational impact. Specializing in Offensive Security, DFIR, and Security Engineering.
+      </p>
+      
+      <div class="flex flex-wrap gap-4 justify-center reveal active">
+        <a href="#contact" class="px-8 py-3 rounded-full bg-accent/10 border border-accent text-accent font-semibold hover:bg-accent hover:text-bg transition-all duration-300">
+          Get In Touch
+        </a>
+        <a href="nijat-cv-newer2.pdf" download class="px-8 py-3 rounded-full border border-gray-600 text-gray-300 font-semibold hover:border-white hover:text-white transition-all duration-300">
+          <i class="fas fa-download mr-2"></i>Resume
+        </a>
+      </div>
+
+      <div class="absolute bottom-10 animate-bounce">
+        <i class="fas fa-chevron-down text-gray-500"></i>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE SECTION -->
+    <section id="experience" class="py-24 px-4 max-w-4xl mx-auto">
+      <div class="flex items-center gap-4 mb-12 reveal">
+        <span class="text-accent font-mono text-xl">02.</span>
+        <h2 class="text-3xl font-bold text-white">Work Experience</h2>
+        <div class="h-px bg-gray-700 flex-grow max-w-xs"></div>
+      </div>
+
+      <div class="relative border-l-2 border-slate-800 ml-3 md:ml-6 space-y-12 reveal">
+        
+        <!-- Job 1 -->
+        <div class="relative pl-8 md:pl-12">
+          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-accent border-4 border-bg"></div>
+          <div class="glass-card p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div>
+                <h3 class="text-xl font-bold text-white">Information Security Engineer</h3>
+                <p class="text-accent font-mono">EarthLink LLC | Atlanta, USA</p>
+              </div>
+              <span class="text-sm text-gray-400 font-mono mt-2 md:mt-0">Oct 2024 - Jan 2026</span>
+            </div>
+            <ul class="space-y-2 text-gray-400 text-sm list-disc list-inside marker:text-accent">
+              <li>Investigated and contained advanced security incidents (zero-day, APTs, DDoS, data exfiltration).</li>
+              <li>Conducted threat research using VirusTotal, ThreatFox, Shodan, and AbuseIPDB.</li>
+              <li>Deployed and monitored SentinelOne EDR for proactive monitoring and early detection.</li>
+              <li>Enhanced email security via Hornetsecurity (phishing detection, tracing, compliance).</li>
+              <li>Ran Nessus vulnerability scans and collaborated with IT to validate remediation.</li>
+              <li>Audited Azure identities and permissions to enforce least-privilege controls.</li>
+            </ul>
           </div>
-          <div class="glass-card flex flex-col items-center justify-center text-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg" alt="Mercedes-Benz" class="h-10 w-auto invert brightness-0">
-            <p class="mt-4 text-gray-300">Acknowledged by Mercedes-Benz for security contributions.</p>
+        </div>
+
+        <!-- Job 2 -->
+        <div class="relative pl-8 md:pl-12">
+          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-secondary border-4 border-bg"></div>
+          <div class="glass-card p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div>
+                <h3 class="text-xl font-bold text-white">Cybersecurity Analyst</h3>
+                <p class="text-secondary font-mono">CERT.AZ | Baku, Azerbaijan</p>
+              </div>
+              <span class="text-sm text-gray-400 font-mono mt-2 md:mt-0">Feb 2023 - June 2023</span>
+            </div>
+            <ul class="space-y-2 text-gray-400 text-sm list-disc list-inside marker:text-secondary">
+              <li>Supported DFIR investigations: evidence collection, log analysis, root cause ID.</li>
+              <li>Reviewed Checkmarx results to advise development teams on secure coding.</li>
+              <li>Responded to phishing, malware, DDoS, and ransomware incidents.</li>
+              <li>Conducted threat analysis using open-source tools and Splunk log analysis.</li>
+            </ul>
           </div>
-          <div class="glass-card flex flex-col items-center justify-center text-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="h-10 w-auto">
-            <p class="mt-4 text-gray-300">Recognized by other international companies for cybersecurity expertise.</p>
+        </div>
+
+        <!-- Job 3 -->
+        <div class="relative pl-8 md:pl-12">
+          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-bg"></div>
+          <div class="glass-card p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div>
+                <h3 class="text-xl font-bold text-white">Cybersecurity Analyst</h3>
+                <p class="text-purple-400 font-mono">Aztelekom LLC | Baku, Azerbaijan</p>
+              </div>
+              <span class="text-sm text-gray-400 font-mono mt-2 md:mt-0">Nov 2022 - March 2023</span>
+            </div>
+            <ul class="space-y-2 text-gray-400 text-sm list-disc list-inside marker:text-purple-500">
+              <li>Performed web and network penetration testing across company environments.</li>
+              <li>Developed Python scripts to automate log analysis (web servers, firewalls).</li>
+              <li>Identified and reported security vulnerabilities in subnetworks.</li>
+            </ul>
           </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills" class="py-24 px-4 max-w-6xl mx-auto">
+      <div class="flex items-center gap-4 mb-12 reveal">
+        <span class="text-accent font-mono text-xl">03.</span>
+        <h2 class="text-3xl font-bold text-white">Technical Arsenal</h2>
+        <div class="h-px bg-gray-700 flex-grow max-w-xs"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+        
+        <!-- Defensive -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <i class="fas fa-shield-alt text-2xl text-accent"></i>
+            <h3 class="font-bold text-lg">Blue Team / Defensive</h3>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">SOC Operations</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">Incident Response</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">Threat Intelligence</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">Malware Analysis</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">Splunk / ELK</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">SentinelOne</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-accent">Azure Security</span>
+          </div>
+        </div>
+
+        <!-- Offensive -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <i class="fas fa-bug text-2xl text-red-400"></i>
+            <h3 class="font-bold text-lg">Red Team / Offensive</h3>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Penetration Testing</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Vulnerability Assessment</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Nessus</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Burp Suite</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-red-400">Web App Sec</span>
+          </div>
+        </div>
+
+        <!-- Languages & Tools -->
+        <div class="glass-card p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <i class="fas fa-code text-2xl text-green-400"></i>
+            <h3 class="font-bold text-lg">Code & Tools</h3>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Python</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Bash Scripting</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Linux/Unix</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">WAF</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">Firewalls</span>
+            <span class="px-3 py-1 bg-slate-800 rounded text-sm text-green-400">DLP</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- EDUCATION & CERTS -->
+    <section class="py-24 px-4 max-w-6xl mx-auto bg-slate-900/30">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 reveal">
+        
+        <!-- Education -->
+        <div>
+          <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Education</h3>
+          <div class="space-y-6">
+            <div class="flex group">
+              <div class="mr-4 mt-1 text-accent"><i class="fas fa-graduation-cap"></i></div>
+              <div>
+                <h4 class="font-bold text-white group-hover:text-accent transition-colors">Master of Cybersecurity</h4>
+                <p class="text-gray-400 text-sm">Eötvös Loránd University</p>
+                <p class="text-gray-500 text-xs font-mono mt-1">2023 - 2025</p>
+              </div>
+            </div>
+            <div class="flex group">
+              <div class="mr-4 mt-1 text-accent"><i class="fas fa-university"></i></div>
+              <div>
+                <h4 class="font-bold text-white group-hover:text-accent transition-colors">Bachelor of IT</h4>
+                <p class="text-gray-400 text-sm">Baku Engineering University</p>
+                <p class="text-gray-500 text-xs font-mono mt-1">2019 - 2023 | GPA: 88/100</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certs & Languages -->
+        <div>
+          <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Certifications & Languages</h3>
+          <div class="space-y-6">
+            <div class="flex items-start">
+              <i class="fas fa-certificate text-yellow-500 mt-1 mr-3"></i>
+              <div>
+                <p class="font-bold text-white">Certified AppSec Practitioner (CAP)</p>
+                <p class="text-xs text-gray-500 font-mono">ID: 8192272</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <i class="fas fa-certificate text-blue-500 mt-1 mr-3"></i>
+              <div>
+                <p class="font-bold text-white">SOC Analyst</p>
+                <p class="text-xs text-gray-500 font-mono">LetsDefend.io</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <i class="fas fa-certificate text-green-500 mt-1 mr-3"></i>
+              <div>
+                <p class="font-bold text-white">IBM Cybersecurity Analyst</p>
+              </div>
+            </div>
+            
+            <div class="mt-8 pt-4 border-t border-gray-800">
+               <p class="text-sm font-mono text-gray-400">
+                 <span class="text-white">LANGUAGES:</span> English (C1) • Azerbaijani (C2) • Turkish (C1)
+               </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HALL OF FAME -->
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+      <div class="text-center mb-12 reveal">
+        <h2 class="text-3xl font-bold text-white">Hall of Fame</h2>
+        <p class="text-gray-400 mt-2">Recognized by industry leaders for security contributions</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+        <div class="glass-card p-6 flex flex-col items-center justify-center text-center hover:bg-white/5">
+          <i class="fas fa-rocket text-4xl text-white mb-4"></i>
+          <h3 class="font-bold text-lg mb-2">NASA</h3>
+          <p class="text-sm text-gray-400">Vulnerability Disclosure</p>
+        </div>
+        <div class="glass-card p-6 flex flex-col items-center justify-center text-center hover:bg-white/5">
+          <i class="fas fa-car text-4xl text-white mb-4"></i>
+          <h3 class="font-bold text-lg mb-2">Mercedes-Benz</h3>
+          <p class="text-sm text-gray-400">Security Acknowledgement</p>
+        </div>
+        <div class="glass-card p-6 flex flex-col items-center justify-center text-center hover:bg-white/5">
+          <i class="fab fa-microsoft text-4xl text-white mb-4"></i>
+          <h3 class="font-bold text-lg mb-2">Microsoft</h3>
+          <p class="text-sm text-gray-400">Contributor Recognition</p>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    <!-- ARTICLES & PROJECTS -->
+    <section id="projects" class="py-24 px-4 max-w-6xl mx-auto">
+      <div class="flex items-center gap-4 mb-12 reveal">
+        <span class="text-accent font-mono text-xl">04.</span>
+        <h2 class="text-3xl font-bold text-white">Projects & Publications</h2>
+        <div class="h-px bg-gray-700 flex-grow max-w-xs"></div>
+      </div>
 
-    <!-- Skills -->
-    <section id="skills" class="py-24">
-      <div class="max-w-5xl mx-auto text-center px-4">
-        <h2 class="text-3xl font-semibold mb-12" style="color: var(--accent);">Core Competencies</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://logos-world.net/wp-content/uploads/2022/11/Splunk-Emblem.png" alt="Splunk" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">Splunk</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+        
+        <!-- Project 1 -->
+        <a href="https://github.com/nijiinhell/4tail" target="_blank" class="glass-card p-6 group block">
+          <div class="flex justify-between items-center mb-4">
+            <i class="far fa-folder text-3xl text-accent"></i>
+            <i class="fab fa-github text-xl text-gray-400 group-hover:text-white"></i>
           </div>
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Nessus-Professional-FullColor-RGB.svg" alt="Nessus" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">Nessus</p>
+          <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors">4tail</h3>
+          <p class="text-gray-400 text-sm mt-3 mb-4">A simple but real-based modified tool designed for bug bounty hunters to streamline workflow.</p>
+          <div class="flex gap-2 font-mono text-xs text-gray-500">
+            <span>Bash</span>
+            <span>Recon</span>
           </div>
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://cdn.brandfetch.io/idqbZJLrXa/theme/light/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B" alt="SentinelOne" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">SentinelOne</p>
+        </a>
+
+        <!-- Project 2 -->
+        <a href="https://github.com/nijiinhell/dencer" target="_blank" class="glass-card p-6 group block">
+          <div class="flex justify-between items-center mb-4">
+            <i class="far fa-folder text-3xl text-accent"></i>
+            <i class="fab fa-github text-xl text-gray-400 group-hover:text-white"></i>
           </div>
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://img.icons8.com/color/512/azure-1.png" alt="Azure Security" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">Azure Security</p>
+          <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors">Dencer</h3>
+          <p class="text-gray-400 text-sm mt-3 mb-4">Secure Python tool for file encryption and decryption utilizing AES-GCM standards.</p>
+          <div class="flex gap-2 font-mono text-xs text-gray-500">
+            <span>Python</span>
+            <span>Cryptography</span>
           </div>
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://img.icons8.com/color/512/python.png" alt="Python" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">Python</p>
+        </a>
+        
+        <!-- Article 1 -->
+        <a href="https://iamnijat.medium.com/advanced-how-do-hackers-hide-their-traces-on-fraud-process-with-real-examples-of-card-crypto-ce04cf5167d2" target="_blank" class="glass-card p-6 group block border-l-4 border-l-secondary">
+          <div class="flex justify-between items-center mb-4">
+            <i class="fas fa-newspaper text-3xl text-secondary"></i>
+            <i class="fas fa-external-link-alt text-xl text-gray-400 group-hover:text-white"></i>
           </div>
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://img.icons8.com/color/512/bash.png" alt="Bash" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">Bash</p>
+          <h3 class="text-xl font-bold text-white group-hover:text-secondary transition-colors">How Hackers Hide Their Traces</h3>
+          <p class="text-gray-400 text-sm mt-3">Deep dive into operational security (OpSec) used by fraudsters.</p>
+        </a>
+
+        <!-- Article 2 -->
+        <a href="https://iamnijat.medium.com/boost-your-subdomain-enumeration-44ab27343c1f" target="_blank" class="glass-card p-6 group block border-l-4 border-l-secondary">
+          <div class="flex justify-between items-center mb-4">
+            <i class="fas fa-newspaper text-3xl text-secondary"></i>
+            <i class="fas fa-external-link-alt text-xl text-gray-400 group-hover:text-white"></i>
           </div>
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://cdn.brandfetch.io/idnFD6zYJN/w/400/h/400/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" alt="Burp Suite" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">Burp Suite</p>
-          </div>
-          <div class="glass-card items-center justify-center text-center">
-            <img src="https://www.sierraexperts.com/wp-content/uploads/2024/02/hornetsecurity-logo.png" alt="Hornetsecurity" class="h-12 mb-2 object-contain">
-            <p class="font-semibold">Hornetsecurity</p>
-          </div>
-        </div>
+          <h3 class="text-xl font-bold text-white group-hover:text-secondary transition-colors">Boost Subdomain Enumeration</h3>
+          <p class="text-gray-400 text-sm mt-3">Advanced techniques to expand attack surface discovery.</p>
+        </a>
+
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    <!-- CONTACT -->
+    <section id="contact" class="py-32 px-4 text-center max-w-2xl mx-auto">
+      <span class="text-accent font-mono">05. What's Next?</span>
+      <h2 class="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">Get In Touch</h2>
+      <p class="text-gray-400 mb-10 text-lg">
+        Currently based in <span class="text-white font-semibold">Budapest, Hungary</span>. I am always open to discussing new opportunities, security research, or just saying hello.
+      </p>
+      
+      <a href="mailto:nijatmmmdv@gmail.com" class="inline-block px-8 py-4 rounded bg-transparent border border-accent text-accent font-mono text-sm hover:bg-accent/10 transition-all">
+        Say Hello
+      </a>
 
-    <!-- Articles -->
-    <section id="articles" class="py-24">
-      <div class="max-w-5xl mx-auto px-4">
-        <h2 class="text-3xl font-semibold mb-12 text-center" style="color: var(--accent);">Featured Articles</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="glass-card text-center">
-            <div class="flex-grow">
-              <h3 class="text-lg font-bold mb-2">Advanced: How Hackers Hide Their Traces</h3>
-              <p class="text-sm mb-4 text-gray-400">Techniques hackers use to cover their tracks in fraud schemes, with real-world examples.</p>
-            </div>
-            <a href="https://iamnijat.medium.com/advanced-how-do-hackers-hide-their-traces-on-fraud-process-with-real-examples-of-card-crypto-ce04cf5167d2" target="_blank" class="modern-btn secondary mt-4 self-center">Read Article</a>
-          </div>
-          <div class="glass-card text-center">
-            <div class="flex-grow">
-              <h3 class="text-lg font-bold mb-2">Email Spoofing with Lack of SPF/DMARC</h3>
-              <p class="text-sm mb-4 text-gray-400">Explanation of how attackers exploit missing email security protocols to spoof domains.</p>
-            </div>
-            <a href="https://iamnijat.medium.com/email-spoofing-with-lack-spf-and-or-dmarc-records-1a414b8f821f" target="_blank" class="modern-btn secondary mt-4 self-center">Read Article</a>
-          </div>
-          <div class="glass-card text-center">
-            <div class="flex-grow">
-              <h3 class="text-lg font-bold mb-2">Boost Your Subdomain Enumeration</h3>
-              <p class="text-sm mb-4 text-gray-400">Guide on advanced subdomain enumeration methods to strengthen penetration testing results.</p>
-            </div>
-            <a href="https://iamnijat.medium.com/boost-your-subdomain-enumeration-44ab27343c1f" target="_blank" class="modern-btn secondary mt-4 self-center">Read Article</a>
-          </div>
-        </div>
+      <div class="flex justify-center gap-8 mt-16 text-2xl text-gray-400">
+        <a href="https://github.com/nijiinhell" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/nijat-mammadov-cyber/" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-linkedin"></i></a>
+        <a href="https://iamnijat.medium.com/" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-medium"></i></a>
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    <footer class="text-center py-6 text-gray-500 text-sm font-mono">
+      <p>Designed & Built by Nijat Mammadov</p>
+    </footer>
 
-    <!-- Projects -->
-    <section id="projects" class="py-24">
-      <div class="max-w-5xl mx-auto px-4">
-        <h2 class="text-3xl font-semibold mb-12 text-center" style="color: var(--accent);">Open Source Projects</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="glass-card text-center">
-            <div class="flex-grow">
-              <h3 class="text-lg font-bold mb-2">4tail</h3>
-              <p class="text-sm mb-4 text-gray-400">A simple but real-based modified tool for bug bounty hunters</p>
-            </div>
-            <a href="https://github.com/nijiinhell/4tail" target="_blank" class="modern-btn secondary mt-4 self-center">View on GitHub</a>
-          </div>
-          <div class="glass-card text-center">
-            <div class="flex-grow">
-              <h3 class="text-lg font-bold mb-2">Mugetsu</h3>
-              <p class="text-sm mb-4 text-gray-400">Custom script to analyze different types of files for threats</p>
-            </div>
-            <a href="https://github.com/nijiinhell/mugetsu" target="_blank" class="modern-btn secondary mt-4 self-center">View on GitHub</a>
-          </div>
-          <div class="glass-card text-center">
-            <div class="flex-grow">
-              <h3 class="text-lg font-bold mb-2">Dencer</h3>
-              <p class="text-sm mb-4 text-gray-400">A secure Python tool for file encryption and decryption using AES-GCM</p>
-            </div>
-            <a href="https://github.com/nijiinhell/dencer" target="_blank" class="modern-btn secondary mt-4 self-center">View on GitHub</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Contact -->
-    <section id="contact" class="py-16">
-      <div class="max-w-4xl mx-auto text-center px-4">
-        <h2 class="text-3xl font-semibold mb-4" style="color: var(--accent);">Contact</h2>
-        <p class="mb-2 text-gray-400">📍 Budapest, Hungary</p>
-        <p class="mb-4 text-gray-400">📧 <a href="mailto:nijatmmmdv@gmail.com" class="hover:underline" style="color: var(--accent);">nijatmmmdv@gmail.com</a></p>
-        <div class="flex justify-center space-x-6 text-gray-400">
-          <a href="https://www.linkedin.com/in/nijat-mammadov-cyber/" target="_blank" class="hover:text-sky-400 transition-colors">LinkedIn</a>
-          <a href="https://github.com/nijiinhell" target="_blank" class="hover:text-sky-400 transition-colors">GitHub</a>
-          <a href="https://iamnijat.medium.com/" target="_blank" class="hover:text-sky-400 transition-colors">Medium</a>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <div class="scroll-indicator" id="scrollIndicator">
-    <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-  </div>
-
+  <!-- SCRIPTS -->
   <script>
-    // SCROLL INDICATOR FADE
-    const scrollIndicator = document.getElementById("scrollIndicator");
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 100) {
-        scrollIndicator.classList.add("hidden");
-      } else {
-        scrollIndicator.classList.remove("hidden");
-      }
-    });
+    // --- Typewriter Effect ---
+    const textElement = document.getElementById('typewriter');
+    const texts = ['Cybersecurity Engineer', 'Penetration Tester', 'SOC Analyst', 'Threat Hunter'];
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typeSpeed = 100;
 
-    // SCROLL REVEAL ANIMATIONS
-    const observer = new IntersectionObserver(entries => {
+    function type() {
+      const current = texts[textIndex];
+      
+      if (isDeleting) {
+        textElement.textContent = current.substring(0, charIndex - 1);
+        charIndex--;
+        typeSpeed = 50;
+      } else {
+        textElement.textContent = current.substring(0, charIndex + 1);
+        charIndex++;
+        typeSpeed = 100;
+      }
+
+      if (!isDeleting && charIndex === current.length) {
+        isDeleting = true;
+        typeSpeed = 2000; // Pause at end
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % texts.length;
+        typeSpeed = 500;
+      }
+
+      setTimeout(type, typeSpeed);
+    }
+    document.addEventListener('DOMContentLoaded', type);
+
+
+    // --- Scroll Reveal Animation ---
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("reveal");
-          observer.unobserve(entry.target);
+        if(entry.isIntersecting) {
+          entry.target.classList.add('active');
         }
       });
-    }, { threshold: 0.15 });
-    document.querySelectorAll(".glass-card").forEach(el => observer.observe(el));
+    }, { threshold: 0.1 });
+    
+    revealElements.forEach(el => revealObserver.observe(el));
 
-    // INTERACTIVE PARTICLE NETWORK
+
+    // --- Particle Canvas (Optimized) ---
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let particlesArray;
-
-    const mouse = {
-        x: null,
-        y: null,
-        radius: (canvas.height / 120) * (canvas.width / 120)
-    };
-
-    window.addEventListener('mousemove', function(event) {
-        mouse.x = event.x;
-        mouse.y = event.y;
-    });
+    
+    let width, height;
+    let particles = [];
+    
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
     class Particle {
-        constructor(x, y, directionX, directionY, size, color) {
-            this.x = x;
-            this.y = y;
-            this.directionX = directionX;
-            this.directionY = directionY;
-            this.size = size;
-            this.color = color;
-        }
-        draw() {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.size = Math.random() * 2;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.3)'; // Slate 400
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.min(Math.floor(width * height / 15000), 100); // Limit particles for performance
+      for (let i = 0; i < count; i++) particles.push(new Particle());
+    }
+    
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      // Draw Connections
+      particles.forEach((a, index) => {
+        for (let b = index + 1; b < particles.length; b++) {
+          const dx = a.x - particles[b].x;
+          const dy = a.y - particles[b].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.strokeStyle = `rgba(148, 163, 184, ${0.1 - dist/1000})`;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fillStyle = 'rgba(148, 163, 184, 0.3)';
-            ctx.fill();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
         }
-        update() {
-            if (this.x > canvas.width || this.x < 0) {
-                this.directionX = -this.directionX;
-            }
-            if (this.y > canvas.height || this.y < 0) {
-                this.directionY = -this.directionY;
-            }
-            this.x += this.directionX;
-            this.y += this.directionY;
-            this.draw();
-        }
+      });
+      requestAnimationFrame(animateParticles);
     }
 
-    function init() {
-        particlesArray = [];
-        let numberOfParticles = (canvas.height * canvas.width) / 9000;
-        for (let i = 0; i < numberOfParticles; i++) {
-            let size = (Math.random() * 2) + 1;
-            let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-            let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-            let directionX = (Math.random() * .4) - .2;
-            let directionY = (Math.random() * .4) - .2;
-            let color = 'rgba(148, 163, 184, 0.3)';
-            particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-        }
-    }
-
-    function connect() {
-        let opacityValue = 1;
-        for (let a = 0; a < particlesArray.length; a++) {
-            for (let b = a; b < particlesArray.length; b++) {
-                let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
-                             + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                if (distance < (canvas.width/7) * (canvas.height/7)) {
-                    opacityValue = 1 - (distance/20000);
-                    let dx = mouse.x - particlesArray[a].x;
-                    let dy = mouse.y - particlesArray[a].y;
-                    let mouseDistance = Math.sqrt(dx*dx + dy*dy);
-                    if (mouseDistance < mouse.radius) {
-                       ctx.strokeStyle = `rgba(56, 189, 248, ${opacityValue * 0.05})`; 
-                    } else {
-                       ctx.strokeStyle = `rgba(148, 163, 184, ${opacityValue * 0.025})`;
-                    }
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                    ctx.stroke();
-                }
-            }
-        }
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        ctx.clearRect(0, 0, innerWidth, innerHeight);
-        for (let i = 0; i < particlesArray.length; i++) {
-            particlesArray[i].update();
-        }
-        connect();
-    }
-
-    window.addEventListener('resize', function() {
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
-        mouse.radius = ((canvas.height / 120) * (canvas.height / 120));
-        init();
-    });
-
-    window.addEventListener('mouseout', function() {
-        mouse.x = undefined;
-        mouse.y = undefined;
-    });
-
-    init();
-    animate();
+    initParticles();
+    animateParticles();
   </script>
 </body>
 </html>
