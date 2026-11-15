@@ -25,8 +25,8 @@
           colors: {
             bg: '#020617',
             glass: 'rgba(15, 23, 42, 0.65)',
-            accent: '#38bdf8', /* Sky 400 */
-            secondary: '#818cf8', /* Indigo 400 */
+            accent: 'rgb(var(--accent) / <alpha-value>)',
+            secondary: 'rgb(var(--accent2) / <alpha-value>)',
             terminal: '#22c55e', /* Green for terminal vibes */
             darkcard: '#0f172a',
           },
@@ -45,8 +45,8 @@
               '50%': { opacity: '0' },
             },
             glow: {
-              '0%': { textShadow: '0 0 10px rgba(56,189,248,0.2)' },
-              '100%': { textShadow: '0 0 30px rgba(56,189,248,0.6), 0 0 10px rgba(56,189,248,0.4)' },
+              '0%': { textShadow: '0 0 10px rgb(var(--accent)/0.2)' },
+              '100%': { textShadow: '0 0 30px rgb(var(--accent)/0.6), 0 0 10px rgb(var(--accent)/0.4)' },
             }
           }
         }
@@ -80,7 +80,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     }
     #page-loader.fade-out {
       opacity: 0;
@@ -93,10 +93,10 @@
       top: 0;
       left: 0;
       height: 2px;
-      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+      background: linear-gradient(90deg, rgb(var(--accent)), #818cf8, #c084fc);
       z-index: 100;
       width: 0%;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 10px rgb(var(--accent)/0.8);
       transition: width 0.1s ease-out;
     }
 
@@ -116,7 +116,7 @@
       position: absolute; filter: blur(90px); opacity: 0.18;
       animation: float 25s infinite alternate ease-in-out;
     }
-    .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #38bdf8; }
+    .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: rgb(var(--accent)); }
     .blob-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #818cf8; animation-delay: -5s; }
     .blob-3 { top: 30%; left: 40%; width: 40vw; height: 40vw; background: #c084fc; animation-delay: -10s; }
 
@@ -141,8 +141,8 @@
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .glass-card:hover {
-      border-color: rgba(56, 189, 248, 0.4);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(56, 189, 248, 0.15), 0 10px 40px rgba(0,0,0,0.6);
+      border-color: rgb(var(--accent)/0.4);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgb(var(--accent)/0.15), 0 10px 40px rgba(0,0,0,0.6);
       transform: translateY(-5px) scale(1.01);
     }
 
@@ -161,7 +161,7 @@
     }
     .terminal-window:hover {
       transform: translateY(-2px);
-      border-color: rgba(56, 189, 248, 0.3);
+      border-color: rgb(var(--accent)/0.3);
     }
     .terminal-header {
       background-color: rgba(30, 41, 59, 0.9);
@@ -217,8 +217,8 @@
       max-width: 600px;
       width: 100%;
       border-radius: 16px;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      box-shadow: 0 0 40px rgba(56, 189, 248, 0.1);
+      border: 1px solid rgb(var(--accent)/0.4);
+      box-shadow: 0 0 40px rgb(var(--accent)/0.1);
       position: relative;
       animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -231,8 +231,8 @@
     .typing-cursor::after {
       content: '|';
       animation: blink 1s step-start infinite;
-      color: #38bdf8;
-      text-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+      color: rgb(var(--accent));
+      text-shadow: 0 0 8px rgb(var(--accent)/0.8);
     }
 
     /* Buttery Smooth Reveal on Scroll */
@@ -253,8 +253,8 @@
       right: 30px;
       background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(5px);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: rgb(var(--accent));
+      border: 1px solid rgb(var(--accent)/0.3);
       padding: 12px 18px;
       border-radius: 50%;
       cursor: pointer;
@@ -269,10 +269,64 @@
       pointer-events: auto;
     }
     #back-to-top:hover {
-      background: #38bdf8;
+      background: rgb(var(--accent));
       color: #020617;
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 10px 20px rgb(var(--accent)/0.3);
+    }
+
+    /* ===== Design upgrade ===== */
+    :root { --accent: 56 189 248; --accent2: 129 140 248; --glass: rgba(15, 23, 42, 0.65); }
+
+    /* Cursor spotlight on cards */
+    .glass-card { position: relative; }
+    .glass-card::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      opacity: 0; transition: opacity 0.3s;
+      background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--accent)/0.14), transparent 45%);
+    }
+    .glass-card:hover::after { opacity: 1; }
+
+    /* Perspective grid floor in the hero */
+    .cyber-grid {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 46%;
+      overflow: hidden; pointer-events: none; z-index: -1; perspective: 420px;
+      -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 95%);
+      mask-image: linear-gradient(to top, #000 10%, transparent 95%);
+    }
+    .cyber-grid::before {
+      content: ''; position: absolute; left: -50%; right: -50%; top: 0; height: 220%;
+      background-image:
+        linear-gradient(rgb(var(--accent)/0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(var(--accent)/0.22) 1px, transparent 1px);
+      background-size: 56px 56px;
+      transform: rotateX(64deg); transform-origin: top center;
+      animation: gridmove 2.4s linear infinite;
+    }
+    @keyframes gridmove { to { background-position: 0 56px; } }
+
+    /* Tool marquee */
+    .marquee {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+    .marquee-track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-group { display: flex; gap: 3rem; padding-right: 3rem; white-space: nowrap; }
+    .marquee-group span::before { content: '//'; margin-right: 0.75rem; color: rgb(var(--accent)/0.6); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* Nav */
+    .nav-active { color: rgb(var(--accent)) !important; }
+    .theme-toggle { cursor: pointer; background: none; border: 0; padding: 0; font: inherit; }
+
+    /* Matrix rain (terminal command) */
+    #matrix-canvas { position: fixed; inset: 0; z-index: 30; pointer-events: none; opacity: 0.28; display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cyber-grid::before, .marquee-track, .aurora-blob { animation: none; }
+      .reveal { transition: none; }
     }
   </style>
   
@@ -285,7 +339,11 @@
   <div id="page-loader">
     <div class="flex flex-col items-center gap-4">
       <i class="fas fa-shield-alt text-4xl text-accent animate-pulse"></i>
-      <span class="font-mono text-sm tracking-widest text-gray-400">INITIALIZING SECURE CONNECTION...</span>
+      <div id="boot-log" class="font-mono text-xs text-gray-400 text-left w-72 h-20"></div>
+      <div class="w-72 h-1 bg-slate-800 rounded overflow-hidden">
+        <div id="boot-bar" class="h-full bg-accent" style="width: 0%; transition: width 0.25s ease;"></div>
+      </div>
+      <span class="font-mono text-[10px] tracking-widest text-gray-600">CLICK TO SKIP</span>
     </div>
   </div>
 
@@ -300,6 +358,7 @@
     <div class="aurora-blob blob-3"></div>
   </div>
   <canvas id="particle-canvas"></canvas>
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
 
   <!-- Navigation -->
   <nav class="fixed w-full z-50 top-0 left-0 border-b border-white/5 bg-slate-950/50 backdrop-blur-xl transition-all duration-300">
@@ -314,6 +373,7 @@
         <a href="#skills" class="hover:text-accent hover:-translate-y-0.5 transition-all">04. Skills</a>
         <a href="#projects" class="hover:text-accent hover:-translate-y-0.5 transition-all">05. Work</a>
         <a href="#contact" class="hover:text-accent hover:-translate-y-0.5 transition-all">06. Contact</a>
+        <button type="button" class="theme-toggle hover:text-accent transition-colors" title="Switch color theme" aria-label="Switch color theme"><i class="fas fa-palette"></i></button>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -329,6 +389,8 @@
       <a href="#experience" class="block text-gray-400 hover:text-accent font-mono text-sm">03. Experience</a>
       <a href="#skills" class="block text-gray-400 hover:text-accent font-mono text-sm">04. Skills</a>
       <a href="#projects" class="block text-gray-400 hover:text-accent font-mono text-sm">05. Projects</a>
+      <a href="#contact" class="block text-gray-400 hover:text-accent font-mono text-sm">06. Contact</a>
+      <button type="button" class="theme-toggle block text-gray-400 hover:text-accent font-mono text-sm"><i class="fas fa-palette mr-2"></i>Switch theme</button>
     </div>
   </nav>
 
@@ -336,10 +398,9 @@
     
     <!-- HERO SECTION -->
     <section id="about" class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
+      <div class="cyber-grid" aria-hidden="true"></div>
       <div class="font-mono text-accent mb-4 tracking-widest text-sm reveal active">Hi, my name is</div>
-      <h1 class="text-6xl md:text-8xl font-bold text-white mb-4 tracking-tighter reveal active animate-glow">
-        Nijat Mammadov.
-      </h1>
+      <h1 class="text-6xl md:text-8xl font-bold text-white mb-4 tracking-tighter reveal active animate-glow" id="hero-name">Nijat Mammadov.</h1>
       <h2 class="text-2xl md:text-4xl text-gray-400 font-mono mb-8 reveal active">
         I am a <span id="typewriter" class="text-accent typing-cursor"></span>
       </h2>
@@ -348,7 +409,7 @@
       </p>
       
       <div class="flex flex-wrap gap-6 justify-center reveal active">
-        <button onclick="openModal('modal-contact')" class="px-8 py-3.5 rounded-full bg-accent/10 border border-accent text-accent font-semibold hover:bg-accent hover:text-bg hover:shadow-[0_0_20px_rgba(56,189,248,0.4)] transition-all duration-300">
+        <button onclick="openModal('modal-contact')" class="px-8 py-3.5 rounded-full bg-accent/10 border border-accent text-accent font-semibold hover:bg-accent hover:text-bg hover:shadow-[0_0_20px_rgb(var(--accent)/0.4)] transition-all duration-300">
           Get In Touch
         </button>
         <a href="nijat-cv-26.pdf" download class="px-8 py-3.5 rounded-full border border-gray-600/50 text-gray-300 font-semibold bg-slate-900/30 backdrop-blur-sm hover:border-white hover:text-white hover:bg-slate-800 transition-all duration-300">
@@ -360,6 +421,14 @@
         <i class="fas fa-chevron-down text-gray-400 text-2xl"></i>
       </div>
     </section>
+
+    <!-- TOOL MARQUEE -->
+    <div class="marquee border-y border-white/5 bg-slate-950/40 py-4 font-mono text-sm text-gray-400" aria-label="Tools I work with">
+      <div class="marquee-track">
+        <div class="marquee-group"><span>SentinelOne</span><span>Splunk</span><span>ELK</span><span>Nessus</span><span>Burp Suite</span><span>Azure</span><span>Hornetsecurity</span><span>Checkmarx</span><span>VirusTotal</span><span>Shodan</span><span>ThreatFox</span><span>AbuseIPDB</span><span>Python</span><span>Bash</span><span>PowerShell</span></div>
+        <div class="marquee-group" aria-hidden="true"><span>SentinelOne</span><span>Splunk</span><span>ELK</span><span>Nessus</span><span>Burp Suite</span><span>Azure</span><span>Hornetsecurity</span><span>Checkmarx</span><span>VirusTotal</span><span>Shodan</span><span>ThreatFox</span><span>AbuseIPDB</span><span>Python</span><span>Bash</span><span>PowerShell</span></div>
+      </div>
+    </div>
 
     <!-- INTERACTIVE TERMINAL SECTION -->
     <section id="terminal" class="py-20 px-4 max-w-4xl mx-auto reveal">
@@ -380,13 +449,13 @@
         </div>
         <div class="terminal-body" id="terminal-output">
           <div class="mb-3 border-b border-gray-800 pb-2">
-            <span class="text-green-400 font-bold tracking-wide">Welcome to Nijat's Portfolio CLI v2.0.0</span><br>
+            <span class="text-green-400 font-bold tracking-wide">Welcome to Nijat's Portfolio CLI v3.0.0</span><br>
             <span class="text-gray-400 text-xs">Establish secure connection... Done.</span><br>
-            <span class="text-gray-500">Type 'help' to see available commands.</span>
+            <span class="text-gray-500">5 flags are hidden around this site. Type 'ctf' to start hunting, or 'help' for commands.</span>
           </div>
           <div class="flex items-center mt-2">
             <span class="text-accent mr-2">➜</span>
-            <span class="text-blue-400 mr-2 font-bold">~</span>
+            <span class="text-blue-400 mr-2 font-bold" id="terminal-cwd">~</span>
             <input type="text" id="terminal-input" class="cmd-input font-mono" autocomplete="off" spellcheck="false">
           </div>
         </div>
@@ -409,14 +478,14 @@
         
         <!-- Job 1 -->
         <div class="relative pl-8 md:pl-12 group">
-          <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent border-4 border-bg group-hover:shadow-[0_0_10px_#38bdf8] transition-shadow duration-300"></div>
+          <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent border-4 border-bg group-hover:shadow-[0_0_10px_rgb(var(--accent))] transition-shadow duration-300"></div>
           <div class="glass-card p-6 md:p-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-6">
               <div>
                 <h3 class="text-xl md:text-2xl font-bold text-white tracking-tight">Information Security Engineer</h3>
                 <p class="text-accent font-mono mt-1">EarthLink LLC | Atlanta, USA</p>
               </div>
-              <span class="text-sm text-gray-400 font-mono mt-3 md:mt-0 bg-slate-800/50 px-3 py-1 rounded-full border border-white/5">Oct 2024 - July 2026</span>
+              <span class="text-sm text-gray-400 font-mono mt-3 md:mt-0 bg-slate-800/50 px-3 py-1 rounded-full border border-white/5">Oct 2024 - Nov 2026</span>
             </div>
             <ul class="space-y-3 text-gray-400 text-sm list-none marker:text-accent relative">
               <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-accent">Investigated and contained advanced security incidents, including zero-day exploits, APTs, large-scale DDoS, and data exfiltration, minimizing operational impact.</li>
@@ -426,6 +495,7 @@
               <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-accent">Ran Nessus vulnerability scans and collaborated with IT teams to validate remediation and reduce risk.</li>
               <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-accent">Audited Azure identities and permissions to detect anomalies and enforce least-privilege access controls.</li>
               <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-accent">Monitored security alerts and dark/deep web sources for leaked credentials and potential threats.</li>
+              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-accent">Supported DFIR investigations through evidence collection, log analysis, and root cause identification, and reviewed Checkmarx results to advise development teams on secure coding practices.</li>
             </ul>
           </div>
         </div>
@@ -462,10 +532,9 @@
               <span class="text-sm text-gray-400 font-mono mt-3 md:mt-0 bg-slate-800/50 px-3 py-1 rounded-full border border-white/5">Feb 2023 - June 2023</span>
             </div>
             <ul class="space-y-3 text-gray-400 text-sm list-none relative">
-              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-secondary">Supported DFIR investigations: evidence collection, log analysis, root cause ID.</li>
-              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-secondary">Reviewed Checkmarx results to advise development teams on secure coding.</li>
-              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-secondary">Responded to phishing, malware, DDoS, and ransomware incidents.</li>
-              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-secondary">Conducted threat analysis using open-source tools and Splunk log analysis.</li>
+              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-secondary">Handled and responded to cybersecurity incidents (phishing, malware, DDoS, ransomware), supported by training in Digital Forensics and Incident Response (DFIR).</li>
+              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-secondary">Conducted threat analysis, detection, and intelligence gathering using open-source and proprietary tools, including log analysis and security monitoring in Splunk.</li>
+              <li class="relative pl-5 before:content-['▹'] before:absolute before:left-0 before:text-secondary">Developed and executed penetration testing techniques for web applications, systems, and networks.</li>
             </ul>
           </div>
         </div>
@@ -514,8 +583,11 @@
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">Threat Intel</span>
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">Malware Analysis</span>
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">Splunk / ELK</span>
-            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">SentinelOne</span>
-            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">Azure Security</span>
+            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">Log Analysis</span>
+            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">SentinelOne (EDR/XDR)</span>
+            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">Azure Security Auditing</span>
+            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">DLP</span>
+            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">Email Security</span>
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-accent shadow-sm">WAF & Firewalls</span>
           </div>
         </div>
@@ -545,6 +617,8 @@
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-green-400 shadow-sm">Python</span>
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-green-400 shadow-sm">Bash</span>
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-green-400 shadow-sm">PowerShell</span>
+            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-green-400 shadow-sm">Docker</span>
+            <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-green-400 shadow-sm">ML Anomaly Detection</span>
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-green-400 shadow-sm">Jira</span>
             <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded text-sm text-green-400 shadow-sm">Vibe Coding</span>
           </div>
@@ -567,7 +641,7 @@
               <div class="space-y-6">
                 <div class="relative pl-4 border-l border-slate-600">
                   <div class="absolute w-2 h-2 bg-accent rounded-full -left-[4.5px] top-1.5"></div>
-                  <h4 class="font-bold text-white text-lg">PhD in Cybersecurity</h4>
+                  <h4 class="font-bold text-white text-lg">PhD in Cybersecurity and Information Protection</h4>
                   <p class="text-gray-400 text-sm">IEU Malta</p>
                   <p class="text-gray-500 text-xs font-mono mt-1">Current</p>
                 </div>
@@ -593,26 +667,33 @@
               <i class="fas fa-certificate text-yellow-500"></i> Certifications
             </h3>
             <div class="space-y-4">
+              <div class="glass-card p-5 border-l-4 border-l-red-500 flex justify-between items-center group">
+                <div>
+                  <p class="font-bold text-white text-sm group-hover:text-red-400 transition-colors">CompTIA SecAI+</p>
+                  <p class="text-xs text-gray-500 font-mono mt-1">CompTIA</p>
+                </div>
+                <i class="fas fa-robot text-white/20 text-2xl"></i>
+              </div>
               <div class="glass-card p-5 border-l-4 border-l-yellow-500 flex justify-between items-center group">
                 <div>
-                  <p class="font-bold text-white text-sm group-hover:text-yellow-400 transition-colors">Certified AppSec Practitioner</p>
+                  <p class="font-bold text-white text-sm group-hover:text-yellow-400 transition-colors">Certified AppSec Practitioner (CAP)</p>
                   <p class="text-xs text-gray-500 font-mono mt-1">ID: 8192272</p>
                 </div>
-                <i class="fas fa-shield-check text-white/20 text-2xl"></i>
+                <i class="fas fa-shield-halved text-white/20 text-2xl"></i>
               </div>
               <div class="glass-card p-5 border-l-4 border-l-blue-500 flex justify-between items-center group">
                 <div>
                   <p class="font-bold text-white text-sm group-hover:text-blue-400 transition-colors">SOC Analyst</p>
                   <p class="text-xs text-gray-500 font-mono mt-1">LetsDefend.io</p>
                 </div>
-                <i class="fas fa-radar text-white/20 text-2xl"></i>
+                <i class="fas fa-satellite-dish text-white/20 text-2xl"></i>
               </div>
               <div class="glass-card p-5 border-l-4 border-l-green-500 flex justify-between items-center group">
                 <div>
                   <p class="font-bold text-white text-sm group-hover:text-green-400 transition-colors">IBM Cybersecurity Analyst</p>
                   <p class="text-xs text-gray-500 font-mono mt-1">IBM Coursera</p>
                 </div>
-                <i class="fab fa-ibm text-white/20 text-2xl"></i>
+                <i class="fas fa-user-shield text-white/20 text-2xl"></i>
               </div>
             </div>
           </div>
@@ -630,7 +711,7 @@
                     <span class="text-accent text-xs font-mono bg-accent/10 px-2 py-1 rounded border border-accent/20">C1 (Advanced)</span>
                   </div>
                   <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-accent to-blue-500 h-full w-[90%] shadow-[0_0_10px_#38bdf8]"></div>
+                    <div class="bg-gradient-to-r from-accent to-blue-500 h-full w-[90%] shadow-[0_0_10px_rgb(var(--accent))]"></div>
                   </div>
                 </div>
                 
@@ -640,7 +721,7 @@
                     <span class="text-accent text-xs font-mono bg-accent/10 px-2 py-1 rounded border border-accent/20">C2 (Native)</span>
                   </div>
                   <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-accent to-blue-500 h-full w-full shadow-[0_0_10px_#38bdf8]"></div>
+                    <div class="bg-gradient-to-r from-accent to-blue-500 h-full w-full shadow-[0_0_10px_rgb(var(--accent))]"></div>
                   </div>
                 </div>
 
@@ -650,7 +731,7 @@
                     <span class="text-accent text-xs font-mono bg-accent/10 px-2 py-1 rounded border border-accent/20">C1 (Advanced)</span>
                   </div>
                   <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-accent to-blue-500 h-full w-[85%] shadow-[0_0_10px_#38bdf8]"></div>
+                    <div class="bg-gradient-to-r from-accent to-blue-500 h-full w-[85%] shadow-[0_0_10px_rgb(var(--accent))]"></div>
                   </div>
                 </div>
               </div>
@@ -708,7 +789,7 @@
           <div class="flex-grow">
             <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">Current Focus: AI in Security</h3>
             <p class="text-gray-300 leading-relaxed mb-6 text-lg">
-              Actively researching the intersection of <span class="text-accent font-semibold drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]">LLMs and Cybersecurity</span>. Leveraging AI for automated threat hunting and log anomaly detection while studying Adversarial ML attacks.
+              Actively researching the intersection of <span class="text-accent font-semibold drop-shadow-[0_0_8px_rgb(var(--accent)/0.5)]">LLMs and Cybersecurity</span>. Leveraging AI for automated threat hunting and log anomaly detection while studying Adversarial ML attacks.
             </p>
             <div class="flex flex-wrap gap-3">
               <span class="px-4 py-1.5 bg-slate-950/50 border border-slate-700/50 rounded-full text-xs font-mono text-white shadow-inner">Prompt Injection</span>
@@ -717,8 +798,8 @@
             </div>
           </div>
           <div class="flex-shrink-0">
-             <div class="w-24 h-24 rounded-full bg-slate-800/50 flex items-center justify-center border border-accent/30 shadow-[0_0_30px_rgba(56,189,248,0.2)]">
-                <i class="fas fa-brain text-5xl text-accent animate-pulse-slow drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]"></i>
+             <div class="w-24 h-24 rounded-full bg-slate-800/50 flex items-center justify-center border border-accent/30 shadow-[0_0_30px_rgb(var(--accent)/0.2)]">
+                <i class="fas fa-brain text-5xl text-accent animate-pulse-slow drop-shadow-[0_0_15px_rgb(var(--accent)/0.8)]"></i>
              </div>
           </div>
         </div>
@@ -733,11 +814,13 @@
             <span class="text-xs text-accent border border-accent/40 bg-accent/5 px-3 py-1.5 rounded-full font-mono group-hover:bg-accent/20 transition-colors">Read Case Study</span>
           </div>
           <h3 class="text-2xl font-bold text-white group-hover:text-accent transition-colors">4tail</h3>
-          <p class="text-gray-400 text-sm mt-3 mb-6 leading-relaxed">A simple but real-based modified tool designed for bug bounty hunters to streamline workflow through efficient log trailing and filtering.</p>
+          <p class="text-gray-400 text-sm mt-3 mb-6 leading-relaxed">A recon pipeline for bug bounty hunters that chains subdomain enumeration, live-host probing, fuzzing, and vulnerability scanning into a single command.</p>
           <div class="flex gap-3 font-mono text-xs text-gray-500">
             <span class="bg-slate-800/50 px-2 py-1 rounded">Bash</span>
             <span class="bg-slate-800/50 px-2 py-1 rounded">Recon</span>
+            <span class="bg-slate-800/50 px-2 py-1 rounded">Nuclei</span>
           </div>
+          <div class="repo-meta mt-4 font-mono text-xs text-gray-500 min-h-[1rem]" data-repo="4tail"></div>
         </div>
 
         <!-- Project 2 (With Modal) -->
@@ -752,6 +835,7 @@
             <span class="bg-slate-800/50 px-2 py-1 rounded">Python</span>
             <span class="bg-slate-800/50 px-2 py-1 rounded">Cryptography</span>
           </div>
+          <div class="repo-meta mt-4 font-mono text-xs text-gray-500 min-h-[1rem]" data-repo="dencer"></div>
         </div>
 
         <!-- Project 3 (Mugetsu) -->
@@ -766,6 +850,7 @@
             <span class="bg-slate-800/50 px-2 py-1 rounded">Python</span>
             <span class="bg-slate-800/50 px-2 py-1 rounded">Threat Intel</span>
           </div>
+          <div class="repo-meta mt-4 font-mono text-xs text-gray-500 min-h-[1rem]" data-repo="Mugetsu"></div>
         </div>
 
         <!-- Project 4 (Secret) -->
@@ -809,6 +894,7 @@
         </a>
 
       </div>
+
     </section>
 
     <!-- CONTACT -->
@@ -819,7 +905,7 @@
         Currently based in <span class="text-white font-semibold">Budapest, Hungary</span>. I am always open to discussing new opportunities, exploring security research, or just saying hello. Let's connect.
       </p>
       
-      <button onclick="openModal('modal-contact')" class="inline-block px-10 py-4 rounded-md bg-transparent border border-accent text-accent font-mono text-sm hover:bg-accent/10 hover:shadow-[0_0_20px_rgba(56,189,248,0.3)] transition-all duration-300">
+      <button onclick="openModal('modal-contact')" class="inline-block px-10 py-4 rounded-md bg-transparent border border-accent text-accent font-mono text-sm hover:bg-accent/10 hover:shadow-[0_0_20px_rgb(var(--accent)/0.3)] transition-all duration-300">
         Say Hello
       </button>
 
@@ -859,7 +945,7 @@
           <label class="block text-gray-400 text-sm font-mono mb-2" for="message">Message</label>
           <textarea name="message" id="message" rows="4" class="w-full bg-slate-900/50 border border-slate-700/50 rounded-md p-4 text-white focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-all resize-none" placeholder="Write your message here..." required></textarea>
         </div>
-        <button type="submit" id="submit-btn" class="w-full bg-accent text-bg font-bold py-4 rounded-md hover:bg-white hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] transition-all duration-300 mt-2">
+        <button type="submit" id="submit-btn" class="w-full bg-accent text-bg font-bold py-4 rounded-md hover:bg-white hover:shadow-[0_0_20px_rgb(var(--accent)/0.5)] transition-all duration-300 mt-2">
           Send Message
         </button>
         <p id="contact-status" class="text-xs text-center font-mono mt-3 min-h-[1.5em]"></p>
@@ -874,18 +960,19 @@
       <div class="space-y-6 text-gray-300">
         <div>
           <h4 class="text-accent font-mono text-sm tracking-widest border-l-2 border-accent pl-2">THE CHALLENGE</h4>
-          <p class="text-sm mt-2 leading-relaxed text-gray-400">Manual log analysis during bug bounties is slow and tedious. Grepping through massive files often leads to missed vulnerabilities and wasted operational time.</p>
+          <p class="text-sm mt-2 leading-relaxed text-gray-400">Early-stage bug bounty recon means running the same chain of tools by hand for every target, then stitching their outputs together. It is slow, repetitive, and easy to get wrong.</p>
         </div>
         <div>
           <h4 class="text-accent font-mono text-sm tracking-widest border-l-2 border-accent pl-2">THE SOLUTION</h4>
-          <p class="text-sm mt-2 leading-relaxed text-gray-400">I developed `4tail`, a Bash-based tool that automates the tailing of logs with real-time color-coding and regex-based filtering specifically tailored for HTTP error codes (403, 500, etc.).</p>
+          <p class="text-sm mt-2 leading-relaxed text-gray-400">I developed `4tail`, a Bash script that runs the whole chain from one command: Subfinder for subdomain enumeration, Httpx for live-host detection, Ffuf for content fuzzing, and Nuclei for vulnerability scanning.</p>
         </div>
         <div>
           <h4 class="text-accent font-mono text-sm tracking-widest border-l-2 border-accent pl-2">THE RESULT</h4>
-          <p class="text-sm mt-2 leading-relaxed text-gray-400">Increased triage speed by approximately 40% and successfully identified hidden administrative endpoints in a recent engagement.</p>
+          <p class="text-sm mt-2 leading-relaxed text-gray-400">Each stage writes to its own results file (subdomains, alive hosts, fuzzing hits, Nuclei findings) while progress streams to the terminal, so a target goes from domain name to triage-ready output in a single run.</p>
         </div>
         <div class="bg-black/60 border border-white/10 p-4 rounded-md font-mono text-xs text-green-400 shadow-inner overflow-x-auto">
-          $ ./4tail.sh -u target.com -w common.txt --filter 403
+          $ chmod +x 4tail.sh<br>
+          $ ./4tail.sh target.com
         </div>
       </div>
       <a href="https://github.com/nijiinhell/4tail" target="_blank" rel="noopener noreferrer" class="inline-block mt-8 text-accent hover:text-white hover:underline text-sm font-mono transition-colors">View Source Code <i class="fas fa-arrow-right ml-1"></i></a>
@@ -967,11 +1054,6 @@
   <!-- SCRIPTS -->
   <script>
     // --- Initial Cinematic Loader Fade Out ---
-    window.onload = function() {
-      setTimeout(() => {
-        document.getElementById('page-loader').classList.add('fade-out');
-      }, 500); // Short delay for cinematic feel
-    };
 
     // --- EASTER EGG: Console Flag ---
     console.log(
@@ -1066,20 +1148,13 @@
       }
     });
 
-    // --- Terminal Logic ---
+    // --- Terminal Logic (mini CTF) ---
     const termInput = document.getElementById('terminal-input');
     const termOutput = document.getElementById('terminal-output');
-    
-    // CTF Game State
-    const foundFlags = new Set();
-    const totalFlags = 2;
-    const validFlags = {
-      'flag{y0u_f0und_th3_h1dd3n_c0mm3nt_l3v3l_1}': 'Level 1: Source Code Hunter',
-      'flag{c0ns0l3_l0g_hunt3r}': 'Level 2: Console Explorer'
-    };
+    const termCwd = document.getElementById('terminal-cwd');
 
     function escapeHtml(unsafe) {
-        return unsafe
+        return String(unsafe)
              .replace(/&/g, "&amp;")
              .replace(/</g, "&lt;")
              .replace(/>/g, "&gt;")
@@ -1087,98 +1162,281 @@
              .replace(/'/g, "&#039;");
     }
 
+    // Flags are stored encoded so that reading this script is not the fastest way to win.
+    const LEVELS = [
+      { key: 'ZmxhZ3t5MHVfZjB1bmRfdGgzX2gxZGQzbl9jMG1tM250X2wzdjNsXzF9', name: 'Source Code Hunter', hint: 'Developers leave comments behind. View the page source.' },
+      { key: 'ZmxhZ3tjMG5zMGwzX2wwZ19odW50M3J9', name: 'Console Explorer',   hint: 'The browser console likes to talk. Open DevTools.' },
+      { key: 'ZmxhZ3tiNHMzNjRfMXNfbjB0XzNuY3J5cHQxMG59', name: 'Not Encryption',     hint: 'Not every file shows up in a plain ls. Try the flags ls has.' },
+      { key: 'ZmxhZ3t0cnU1dF9uMF8wbjNfbjB0XzN2M25fcjB0MTN9', name: 'Riddle Master',      hint: "Type 'riddle'. Bring your brain." },
+      { key: 'ZmxhZ3todW50M3IyX3c0c190aDNfcDRzc3cwcmR9', name: 'Root Hunter',        hint: 'Somebody wrote a password down. Find it, then try sudo.' }
+    ];
+    const RANKS = ['Script Kiddie', 'Curious Visitor', 'Recon Rookie', 'Packet Sniffer', 'Exploit Developer', 'Root Hunter'];
+    const foundFlags = new Set();
+    try {
+      JSON.parse(localStorage.getItem('nm-ctf') || '[]').forEach(k => { if (LEVELS.some(l => l.key === k)) foundFlags.add(k); });
+    } catch (e) {}
+    const saveFlags = () => { try { localStorage.setItem('nm-ctf', JSON.stringify([...foundFlags])); } catch (e) {} };
+
+    // Riddles (answers are stored encoded too)
+    const RIDDLES = [
+      { q: 'There are 10 types of people in the world: those who understand binary and those who don\'t. In decimal, how many types is that?', a: ['Mg==', 'dHdv'] },
+      { q: 'I am an HTTP status code. I know exactly who you are, I know the page exists, and I still will not let you in. Which code am I?', a: ['NDAz'] },
+      { q: 'Caesar had a younger, lazier cousin who always shifted by 13. He left you this: "gehfg ab bar". What does it say?', a: ['dHJ1c3Qgbm8gb25l'] }
+    ];
+    let riddleIndex = 0;
+
+    // Fake filesystem
+    const HOME = '/home/guest';
+    const FILES = {
+      '/home/guest/about.txt': 'Nijat Mammadov - Security Engineer.\nBlue team by day, red team by curiosity.',
+      '/home/guest/todo.txt': '1. Patch everything\n2. Stop writing my sudo password on a sticky note\n3. Hide that one folder better (ls -a ruins everything)\n4. Coffee',
+      '/home/guest/projects/4tail.txt': 'Recon pipeline: subfinder -> httpx -> ffuf -> nuclei.\nhttps://github.com/nijiinhell/4tail',
+      '/home/guest/projects/dencer.txt': 'AES-GCM file encryption for people who do not trust zip passwords.\nhttps://github.com/nijiinhell/dencer',
+      '/home/guest/projects/mugetsu.txt': 'File triage with VirusTotal. Colors included, malware not included.\nhttps://github.com/nijiinhell/Mugetsu',
+      '/home/guest/.secret/notes.txt': atob('RW5jb2RlZCB0aGlzIHNvIG5vYm9keSBjYW4gcmVhZCBpdC4gVG90YWxseSBzZWN1cmU6CgpabXhoWjN0aU5ITXpOalJmTVhOZmJqQjBYek51WTNKNWNIUXhNRzU5CgooaWYgb25seSB0aGVyZSB3YXMgYSAnZGVjb2RlJyBjb21tYW5kLi4uKQ=='),
+      '/home/guest/.secret/sticky_note.txt': atob('c3VkbyBwYXNzd29yZDogaHVudGVyMgoKKGRvbid0IHdvcnJ5LCBhbGwgeW91IHNlZSBpcyAqKioqKioqKQ=='),
+      '/etc/passwd': 'root:x:0:0:root:/root:/bin/bash\nguest:x:1000:1000:curious visitor:/home/guest:/bin/bash\nnijat:x:1001:1001:probably watching the logs:/home/nijat:/bin/zsh',
+      '/root/flag.txt': 'You made it to root. Here is your trophy:\n\n' + atob('ZmxhZ3todW50M3IyX3c0c190aDNfcDRzc3cwcmR9')
+    };
+    let cwd = HOME;
+    let isRoot = false;
+    let sudoFails = 0;
+
+    const displayPath = p => p === HOME ? '~' : (p.startsWith(HOME + '/') ? '~' + p.slice(HOME.length) : p);
+    function resolvePath(p) {
+      if (!p) return cwd;
+      if (p === '~' || p.startsWith('~/')) p = HOME + p.slice(1);
+      else if (!p.startsWith('/')) p = cwd + '/' + p;
+      const parts = [];
+      p.split('/').forEach(seg => {
+        if (!seg || seg === '.') return;
+        if (seg === '..') parts.pop(); else parts.push(seg);
+      });
+      return '/' + parts.join('/');
+    }
+    const dirPrefix = p => p === '/' ? '/' : p + '/';
+    const isDir = p => p === '/' || Object.keys(FILES).some(f => f.startsWith(dirPrefix(p)));
+    const isDenied = p => !isRoot && (p === '/root' || p.startsWith('/root/'));
+    function listDir(p, showAll) {
+      const names = new Set();
+      Object.keys(FILES).forEach(f => {
+        if (!f.startsWith(dirPrefix(p))) return;
+        const rest = f.slice(dirPrefix(p).length).split('/');
+        names.add(rest.length > 1 ? rest[0] + '/' : rest[0]);
+      });
+      return [...names].filter(n => showAll || !n.startsWith('.')).sort();
+    }
+
+    function ctfStatus() {
+      const rows = LEVELS.map((l, i) => foundFlags.has(l.key)
+        ? `<span class="text-green-400">[x] Level ${i + 1}: ${l.name}</span>`
+        : `<span class="text-gray-500">[ ] Level ${i + 1}: ???</span>`).join('\n');
+      return `<span class="text-purple-400 font-bold">CTF STATUS</span> ${foundFlags.size}/${LEVELS.length} flags  |  Rank: <span class="text-accent">${RANKS[foundFlags.size]}</span>\n${rows}\n<span class="text-gray-500">Found one? submit flag{...}   Stuck? hint</span>`;
+    }
+
+    function submitFlag(flag) {
+      if (!flag) return 'Usage: submit flag{...}';
+      let key = '';
+      try { key = btoa(flag); } catch (e) {}
+      const level = LEVELS.find(l => l.key === key);
+      if (!level) return '<span class="text-red-400">Incorrect flag signature. Keep looking.</span>';
+      if (foundFlags.has(key)) return '<span class="text-yellow-400">Flag already authenticated in local registry.</span>';
+      foundFlags.add(key);
+      saveFlags();
+      let out = `<span class="text-green-400 font-bold">CORRECT! Level ${LEVELS.indexOf(level) + 1} [${level.name}] unlocked.</span>\nNew rank: <span class="text-accent">${RANKS[foundFlags.size]}</span> (${foundFlags.size}/${LEVELS.length})`;
+      if (foundFlags.size === LEVELS.length) {
+        out += '\n<span class="text-accent font-bold">ALL FLAGS CAPTURED. You are a true hunter. Now go tell Nijat how easy it was.</span>';
+        if (!matrixTimer) { toggleMatrix(); setTimeout(() => { if (matrixTimer) toggleMatrix(); }, 7000); }
+      }
+      return out;
+    }
+
+    function runCommand(rawInput) {
+      const args = rawInput.split(/\s+/);
+      const cmd = args[0].toLowerCase();
+      const rest = rawInput.slice(args[0].length).trim();
+
+      switch (cmd) {
+        case 'help':
+          return '<span class="text-yellow-400">The game</span>\n'
+            + '  ctf       Show CTF progress and rank\n'
+            + '  hint      Get a nudge for the next flag\n'
+            + '  submit    Submit a flag (submit flag{...})\n'
+            + '  riddle    Answer three riddles (answer &lt;text&gt;)\n'
+            + '<span class="text-yellow-400">The shell</span>\n'
+            + '  ls, cd, cat, pwd, whoami, decode, sudo, clear\n'
+            + '<span class="text-yellow-400">About Nijat</span>\n'
+            + '  contact, skills, projects, socials, cv, neofetch\n'
+            + '<span class="text-yellow-400">Just for fun</span>\n'
+            + '  theme, matrix  <span class="text-gray-500">...and a few commands nobody documented</span>';
+        case 'ctf':
+          return ctfStatus();
+        case 'hint': {
+          const next = LEVELS.find(l => !foundFlags.has(l.key));
+          return next
+            ? `<span class="text-purple-400">Hint for level ${LEVELS.indexOf(next) + 1}:</span> ${next.hint}`
+            : '<span class="text-green-400">Nothing left to hint at. You found everything.</span>';
+        }
+        case 'submit':
+          return submitFlag(args[1]);
+        case 'riddle':
+          if (riddleIndex >= RIDDLES.length) return `<span class="text-green-400">You already solved them all.</span> Your flag: ${escapeHtml(atob(LEVELS[3].key))}`;
+          return `<span class="text-purple-400">Riddle ${riddleIndex + 1}/${RIDDLES.length}:</span> ${RIDDLES[riddleIndex].q}\n<span class="text-gray-500">Reply with: answer &lt;your answer&gt;</span>`;
+        case 'answer': {
+          if (riddleIndex >= RIDDLES.length) return 'No riddles left. You are done here.';
+          if (!rest) return 'Usage: answer &lt;your answer&gt;';
+          const guess = btoa(unescape(encodeURIComponent(rest.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim())));
+          if (!RIDDLES[riddleIndex].a.includes(guess)) {
+            const taunts = ['Nope. Even the firewall saw that coming.', 'Wrong. Have you tried turning your brain off and on again?', 'Incorrect. The riddle remains undefeated.'];
+            return `<span class="text-red-400">${taunts[Math.floor(Math.random() * taunts.length)]}</span>`;
+          }
+          riddleIndex++;
+          if (riddleIndex < RIDDLES.length) return `<span class="text-green-400">Correct.</span>\n<span class="text-purple-400">Riddle ${riddleIndex + 1}/${RIDDLES.length}:</span> ${RIDDLES[riddleIndex].q}`;
+          return `<span class="text-green-400 font-bold">All three solved.</span> You earned this: <span class="text-accent">${escapeHtml(atob(LEVELS[3].key))}</span>\n<span class="text-gray-500">Now submit it.</span>`;
+        }
+        case 'pwd':
+          return escapeHtml(cwd);
+        case 'ls': {
+          const showAll = args.slice(1).some(a => /^-\w*a/.test(a));
+          const target = resolvePath(args.slice(1).find(a => !a.startsWith('-')));
+          if (isDenied(target)) return `<span class="text-red-400">ls: cannot open directory '${escapeHtml(displayPath(target))}': Permission denied</span>`;
+          if (FILES[target] !== undefined) return escapeHtml(displayPath(target));
+          if (!isDir(target)) return `<span class="text-red-400">ls: ${escapeHtml(args[1] || '')}: No such file or directory</span>`;
+          const names = listDir(target, showAll);
+          return names.length
+            ? names.map(n => n.endsWith('/') ? `<span class="text-blue-400 font-bold">${escapeHtml(n)}</span>` : escapeHtml(n)).join('   ')
+            : '<span class="text-gray-500">(nothing to see here... or is there?)</span>';
+        }
+        case 'cd': {
+          const target = resolvePath(args[1] || '~');
+          if (isDenied(target)) return `<span class="text-red-400">cd: ${escapeHtml(displayPath(target))}: Permission denied</span> <span class="text-gray-500">(you are not root. yet.)</span>`;
+          if (!isDir(target)) return `<span class="text-red-400">cd: ${escapeHtml(args[1])}: No such directory</span>`;
+          cwd = target;
+          return '';
+        }
+        case 'cat': {
+          if (!args[1]) return 'Usage: cat &lt;file&gt;  <span class="text-gray-500">(no, there is no actual cat)</span>';
+          const target = resolvePath(args[1]);
+          if (isDenied(target)) return `<span class="text-red-400">cat: ${escapeHtml(displayPath(target))}: Permission denied</span> <span class="text-gray-500">(root only)</span>`;
+          if (FILES[target] === undefined) return `<span class="text-red-400">cat: ${escapeHtml(args[1])}: ${isDir(target) ? 'Is a directory' : 'No such file'}</span>`;
+          return escapeHtml(FILES[target]);
+        }
+        case 'decode':
+        case 'base64': {
+          const input = args.slice(1).filter(a => !a.startsWith('-')).join('');
+          if (!input) return 'Usage: decode &lt;base64 string&gt;';
+          try { return `<span class="text-green-400">${escapeHtml(atob(input))}</span>`; }
+          catch (e) { return '<span class="text-red-400">That is not valid base64. It is just vibes.</span>'; }
+        }
+        case 'sudo':
+        case 'su': {
+          if (isRoot) return 'You are already root. Calm down.';
+          if (!args[1]) return '[sudo] password for guest: <span class="text-gray-500">(usage: sudo &lt;password&gt;)</span>';
+          let attempt = '';
+          try { attempt = btoa(rest); } catch (e) {}
+          if (attempt === 'aHVudGVyMg==') {
+            isRoot = true;
+            return '<span class="text-green-400 font-bold">Access granted. You are now root.</span>\n<span class="text-gray-500">With great power comes /root.</span>';
+          }
+          sudoFails++;
+          return sudoFails % 3 === 0
+            ? '<span class="text-red-500 font-bold">sudo: 3 incorrect password attempts. This incident has been reported to Nijat. He is disappointed.</span>'
+            : '<span class="text-red-400">Sorry, try again.</span>';
+        }
+        case 'whoami':
+          return isRoot
+            ? 'root <span class="text-gray-500">(Privilege Level: Dangerous)</span>'
+            : `guest <span class="text-gray-500">(Privilege Level: Low | Rank: ${RANKS[foundFlags.size]})</span>`;
+        case 'contact':
+          return 'Email: <a href="mailto:nijatmmmdv@gmail.com" class="text-accent hover:underline">nijatmmmdv@gmail.com</a>';
+        case 'skills':
+          return 'SOC Operations, Incident Response, Threat Intel, Malware Analysis, SentinelOne (EDR/XDR), Splunk / ELK, Nessus, Burp Suite, Azure Security Auditing, DLP, Email Security, Python, Bash, PowerShell';
+        case 'projects':
+          return '4tail, Dencer, Mugetsu, Project [REDACTED] <span class="text-gray-500">(try: ls projects)</span>';
+        case 'socials':
+          return 'GitHub: <a href="https://github.com/nijiinhell" target="_blank" rel="noopener noreferrer" class="text-accent">@nijiinhell</a>\nLinkedIn: <a href="https://linkedin.com/in/nijat-mammadov-cyber" target="_blank" rel="noopener noreferrer" class="text-accent">@nijat-mammadov-cyber</a>';
+        case 'cv':
+          setTimeout(() => {
+            const link = document.createElement('a');
+            link.href = 'nijat-cv-26.pdf';
+            link.download = 'nijat-cv-26.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }, 1000);
+          return '<span class="text-green-400">Initiating secure download protocol...</span>';
+        case 'neofetch':
+          return '<span class="text-accent font-bold">' + (isRoot ? 'root' : 'guest') + '@nijat-portfolio</span>\n'
+            + '<span class="text-gray-600">---------------------</span>\n'
+            + '<span class="text-accent">Role</span>   : Security Engineer\n'
+            + '<span class="text-accent">Base</span>   : Budapest, Hungary\n'
+            + '<span class="text-accent">Focus</span>  : AI in Security, Blue + Red Team\n'
+            + '<span class="text-accent">Study</span>  : PhD in Cybersecurity and Information Protection\n'
+            + '<span class="text-accent">Certs</span>  : CompTIA SecAI+, CAP, IBM Cybersecurity Analyst\n'
+            + '<span class="text-accent">Shell</span>  : Python, Bash, PowerShell\n'
+            + '<span class="text-accent">Theme</span>  : ' + currentTheme;
+        case 'theme':
+          if (args[1] && THEMES[args[1].toLowerCase()]) setTheme(args[1].toLowerCase());
+          else if (args[1]) return `<span class="text-red-400">Unknown theme.</span> Options: ${Object.keys(THEMES).join(', ')}`;
+          else cycleTheme();
+          return `<span class="text-green-400">Theme set to ${escapeHtml(currentTheme)}.</span> <span class="text-gray-500">Options: ${Object.keys(THEMES).join(', ')}</span>`;
+        case 'matrix':
+          return toggleMatrix()
+            ? '<span class="text-green-400">Wake up, hunter... (run matrix again to stop)</span>'
+            : '<span class="text-gray-400">Matrix rain stopped.</span>';
+        // --- undocumented ---
+        case 'rm':
+          return '<span class="text-red-400">Nice try. The backups are fine. Your reputation is not.</span>';
+        case 'exit':
+        case 'logout':
+          return 'There is no exit. You live in the portfolio now.';
+        case 'vim':
+        case 'vi':
+        case 'nano':
+          return 'Opening editor... <span class="text-gray-500">just kidding. Nobody has ever exited vim, and I will not be responsible.</span>';
+        case 'coffee':
+          return '<span class="text-yellow-400">HTTP 418: I am a teapot.</span>';
+        case 'ping':
+          return 'pong <span class="text-gray-500">(64 bytes of pure enthusiasm, time=0.42 ms)</span>';
+        case 'hack':
+          return '<span class="text-green-400">Hacking the mainframe... 3%... 41%... 99%...</span>\n<span class="text-red-400">Error: this only works in movies.</span>';
+        case 'nmap':
+          return 'Starting scan... <span class="text-gray-500">1 host up, 5 flags open, 0 excuses.</span>';
+        default:
+          return `<span class="text-red-400">Command not found: ${escapeHtml(cmd)}</span>. Type 'help' for options.`;
+      }
+    }
+
     if (termInput && termOutput) {
       termInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-          const rawInput = this.value.trim();
-          if (!rawInput) return;
-          
-          const args = rawInput.split(' ');
-          const cmd = args[0].toLowerCase();
-          
-          const historyDiv = document.createElement('div');
-          
-          const promptContainer = document.createElement('div');
-          promptContainer.className = "flex mt-2";
-          promptContainer.innerHTML = `<span class="text-accent mr-2">➜</span><span class="text-blue-400 mr-2 font-bold">~</span><span class="text-white">${escapeHtml(rawInput)}</span>`;
-          historyDiv.appendChild(promptContainer);
-          
-          let response = '';
-          switch(cmd) {
-            case 'help':
-              response = '<span class="text-yellow-400">Available commands:</span><br>  whoami   - Display current user info<br>  contact  - Show contact email<br>  skills   - List core skills<br>  projects - List main projects<br>  socials  - Show social links<br>  cv       - Download resume<br>  ctf      - Check CTF status<br>  submit   - Submit a flag (Usage: submit flag{...})<br>  clear    - Clear terminal';
-              break;
-            case 'whoami':
-              response = 'guest (Visitor) <br> <span class="text-gray-500">Privilege Level: Low</span>';
-              break;
-            case 'contact':
-              response = 'Email: <a href="mailto:nijatmmmdv@gmail.com" class="text-accent hover:underline">nijatmmmdv@gmail.com</a>';
-              break;
-            case 'skills':
-              response = 'Python, Bash, PowerShell, Splunk, SentinelOne, Nessus, Burp Suite, Azure Security';
-              break;
-            case 'projects':
-              response = '4tail, Dencer, Mugetsu, Project [REDACTED]';
-              break;
-            case 'socials':
-              response = 'GitHub: <a href="https://github.com/nijiinhell" target="_blank" rel="noopener noreferrer" class="text-accent">@nijiinhell</a><br>LinkedIn: <a href="https://linkedin.com/in/nijat-mammadov-cyber" target="_blank" rel="noopener noreferrer" class="text-accent">@nijat-mammadov-cyber</a>';
-              break;
-            case 'cv':
-              response = '<span class="text-green-400">Initiating secure download protocol...</span>';
-              setTimeout(() => {
-                 const link = document.createElement('a');
-                 link.href = 'nijat-cv-26.pdf';
-                 link.download = 'nijat-cv-26.pdf';
-                 document.body.appendChild(link);
-                 link.click();
-                 document.body.removeChild(link);
-              }, 1000);
-              break;
-            case 'sudo':
-              response = '<span class="text-red-500 font-bold">Permission denied. You are not in the sudoers file. This incident will be reported.</span>';
-              break;
-            case 'ctf':
-              response = `<span class="text-purple-400 font-bold">CTF STATUS:</span> ${foundFlags.size}/${totalFlags} flags found.<br><span class="text-gray-500">Hint: Check the source code and developer tools.</span>`;
-              break;
-            case 'submit':
-              if (args[1]) {
-                const flag = args[1];
-                if (validFlags[flag]) {
-                  if (foundFlags.has(flag)) {
-                    response = `<span class="text-yellow-400">Flag already authenticated in local registry.</span>`;
-                  } else {
-                    foundFlags.add(flag);
-                    response = `<span class="text-green-400 font-bold">CORRECT! [${validFlags[flag]}] unlocked.</span>`;
-                    if (foundFlags.size === totalFlags) {
-                      response += `<br><span class="text-accent font-bold drop-shadow-[0_0_5px_rgba(56,189,248,0.8)]">🎉 CONGRATULATIONS! You found all flags. You are a true hunter.</span>`;
-                    }
-                  }
-                } else {
-                  response = `<span class="text-red-400">Incorrect flag signature. Keep looking.</span>`;
-                }
-              } else {
-                response = 'Usage: submit flag{...}';
-              }
-              break;
-            case 'clear':
-              termOutput.innerHTML = '';
-              this.value = '';
-              return;
-            default:
-              response = `<span class="text-red-400">Command not found: ${escapeHtml(cmd)}</span>. Type 'help' for options.`;
-          }
+        if (e.key !== 'Enter') return;
+        const rawInput = this.value.trim();
+        if (!rawInput) return;
+        this.value = '';
 
-          if (response) {
-            const responseDiv = document.createElement('div');
-            responseDiv.className = "mb-2 ml-4 font-mono";
-            responseDiv.innerHTML = response;
-            historyDiv.appendChild(responseDiv);
-          }
-          
-          termOutput.insertBefore(historyDiv, termOutput.lastElementChild);
-          termOutput.scrollTop = termOutput.scrollHeight;
-          this.value = '';
+        if (rawInput.toLowerCase() === 'clear') {
+          while (termOutput.children.length > 1) termOutput.removeChild(termOutput.firstElementChild);
+          return;
         }
+
+        const historyDiv = document.createElement('div');
+        const promptContainer = document.createElement('div');
+        promptContainer.className = "flex mt-2";
+        promptContainer.innerHTML = `<span class="text-accent mr-2">${isRoot ? '#' : '➜'}</span><span class="text-blue-400 mr-2 font-bold">${escapeHtml(displayPath(cwd))}</span><span class="text-white">${escapeHtml(rawInput)}</span>`;
+        historyDiv.appendChild(promptContainer);
+
+        const response = runCommand(rawInput);
+        if (response) {
+          const responseDiv = document.createElement('div');
+          responseDiv.className = "mb-2 ml-4 font-mono whitespace-pre-wrap break-words";
+          responseDiv.innerHTML = response;
+          historyDiv.appendChild(responseDiv);
+        }
+
+        termCwd.textContent = displayPath(cwd);
+        termCwd.previousElementSibling.textContent = isRoot ? '#' : '➜';
+        termOutput.insertBefore(historyDiv, termOutput.lastElementChild);
+        termOutput.scrollTop = termOutput.scrollHeight;
       });
     }
 
@@ -1332,6 +1590,164 @@
 
     initParticles();
     animateParticles();
+
+    // ================= Design upgrade =================
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- Color themes (nav palette button or terminal: theme <name>) ---
+    const THEMES = {
+      sky:    ['56 189 248', '129 140 248'],
+      matrix: ['34 197 94', '45 212 191'],
+      ember:  ['251 113 133', '251 146 60'],
+      violet: ['192 132 252', '129 140 248']
+    };
+    let currentTheme = 'sky';
+    function setTheme(name) {
+      if (!THEMES[name]) return;
+      currentTheme = name;
+      document.documentElement.style.setProperty('--accent', THEMES[name][0]);
+      document.documentElement.style.setProperty('--accent2', THEMES[name][1]);
+      try { localStorage.setItem('nm-theme', name); } catch (e) {}
+    }
+    function cycleTheme() {
+      const names = Object.keys(THEMES);
+      setTheme(names[(names.indexOf(currentTheme) + 1) % names.length]);
+    }
+    try { setTheme(localStorage.getItem('nm-theme') || 'sky'); } catch (e) {}
+    document.querySelectorAll('.theme-toggle').forEach(btn => btn.addEventListener('click', cycleTheme));
+
+    // --- Text scramble ("decrypt") effect ---
+    function scramble(el, text, ms = 900) {
+      if (reducedMotion) { el.textContent = text; return; }
+      const chars = '!<>-_/[]{}=+*^?#01';
+      const start = performance.now();
+      (function frame(now) {
+        const p = Math.min((now - start) / ms, 1);
+        const solved = Math.floor(p * text.length);
+        let out = text.slice(0, solved);
+        for (let i = solved; i < text.length; i++) {
+          out += text[i] === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)];
+        }
+        el.textContent = out;
+        if (p < 1) requestAnimationFrame(frame);
+      })(start);
+    }
+    const headingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        scramble(entry.target, entry.target.dataset.text, 700);
+        headingObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('main section h2').forEach(h => {
+      if (h.children.length) return;
+      h.dataset.text = h.textContent.trim();
+      headingObserver.observe(h);
+    });
+
+    // --- Boot sequence loader ---
+    (function boot() {
+      const loader = document.getElementById('page-loader');
+      const log = document.getElementById('boot-log');
+      const bar = document.getElementById('boot-bar');
+      const heroName = document.getElementById('hero-name');
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        loader.classList.add('fade-out');
+        if (heroName) scramble(heroName, 'Nijat Mammadov.', 1100);
+      };
+      loader.addEventListener('click', finish);
+      setTimeout(finish, 4000); // never leave the loader stuck
+      if (reducedMotion || !log || !bar) { finish(); return; }
+      const steps = ['Establishing secure channel', 'Verifying visitor identity', 'Loading profile: nijat.mammadov', 'Access granted'];
+      steps.forEach((text, i) => setTimeout(() => {
+        if (finished) return;
+        const line = document.createElement('div');
+        line.innerHTML = '<span class="text-green-400">[ OK ]</span> ';
+        line.append(text);
+        log.appendChild(line);
+        bar.style.width = ((i + 1) / steps.length * 100) + '%';
+        if (i === steps.length - 1) setTimeout(finish, 350);
+      }, 230 * (i + 1)));
+    })();
+
+    // --- Card spotlight + tilt ---
+    if (window.matchMedia('(hover: hover)').matches) {
+      document.querySelectorAll('.glass-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          const x = e.clientX - r.left, y = e.clientY - r.top;
+          card.style.setProperty('--mx', x + 'px');
+          card.style.setProperty('--my', y + 'px');
+          if (reducedMotion) return;
+          const max = Math.min(5, 1400 / r.width);
+          card.style.transform = `perspective(900px) rotateX(${((y / r.height) - 0.5) * -max}deg) rotateY(${((x / r.width) - 0.5) * max}deg) translateY(-4px)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      });
+    }
+
+    // --- Highlight the current section in the nav ---
+    const navLinks = [...document.querySelectorAll('nav a[href^="#"]')].filter(a => a.getAttribute('href').length > 1);
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(a => a.classList.toggle('nav-active', a.getAttribute('href') === '#' + entry.target.id));
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('main section[id]').forEach(sec => navObserver.observe(sec));
+
+    // --- Live GitHub stats on the project cards ---
+    (async function loadRepoMeta() {
+      const nodes = document.querySelectorAll('.repo-meta[data-repo]');
+      if (!nodes.length) return;
+      try {
+        const res = await fetch('https://api.github.com/users/nijiinhell/repos?per_page=100', {
+          headers: { 'Accept': 'application/vnd.github+json' }
+        });
+        if (!res.ok) return;
+        const repos = await res.json();
+        nodes.forEach(node => {
+          const repo = repos.find(r => r.name.toLowerCase() === node.dataset.repo.toLowerCase());
+          if (!repo) return;
+          const updated = new Date(repo.pushed_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+          node.innerHTML = '<i class="fab fa-github mr-2"></i>';
+          const stars = repo.stargazers_count > 0 ? ` · ★ ${repo.stargazers_count}` : '';
+          node.append(`live from GitHub${stars} · updated ${updated}`);
+        });
+      } catch (e) { /* cards simply stay without live stats */ }
+    })();
+
+    // --- Matrix rain (terminal command: matrix) ---
+    let matrixTimer = null;
+    function toggleMatrix() {
+      const c = document.getElementById('matrix-canvas');
+      if (matrixTimer) {
+        clearInterval(matrixTimer);
+        matrixTimer = null;
+        c.style.display = 'none';
+        return false;
+      }
+      const g = c.getContext('2d');
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+      c.style.display = 'block';
+      const size = 16;
+      const drops = new Array(Math.ceil(c.width / size)).fill(0).map(() => Math.random() * -50);
+      matrixTimer = setInterval(() => {
+        g.fillStyle = 'rgba(2, 6, 23, 0.12)';
+        g.fillRect(0, 0, c.width, c.height);
+        g.fillStyle = `rgb(${THEMES[currentTheme][0].split(' ').join(',')})`;
+        g.font = size + 'px JetBrains Mono, monospace';
+        drops.forEach((y, i) => {
+          g.fillText(String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96)), i * size, y * size);
+          drops[i] = (y * size > c.height && Math.random() > 0.975) ? 0 : y + 1;
+        });
+      }, 50);
+      return true;
+    }
   </script>
 </body>
 </html>
